@@ -1,0 +1,284 @@
+@charset "UTF-8";
+@import url(font-awesome.min.css);
+@import url("https://fonts.googleapis.com/css?family=Scope+One|Trocchi");
+@import url('https://fonts.googleapis.com/css?family=Dancing+Script|Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Nanum+Myeongjo&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif+KR:300&display=swap');
+
+
+
+
+/* ----------- aside -----------*/
+aside {
+	width:15%;
+	height: 95%;
+	background: white;
+	text-align: center;
+	font-family: 'Noto Serif KR';
+	color:black;
+	position: relative;
+	box-sizing: border-box
+  }
+  
+  #profile-1 {
+	float:left;
+  }
+  #profile-2 {
+	float:right;
+  }
+
+  #menuTB {
+	  margin-top: 50px;
+	  
+  }
+
+	#menuTB th {
+	 /* border:1px solid red;` */
+	 text-align: center;
+	 padding:0;
+	 width:65px;
+	 
+	}
+	#menuTB td{
+		font-size: 12px !important;
+		font-family: 'Noto Serif KR';
+		padding: 0;
+	}
+
+
+	#menuTB img, #help img, #logout img{
+		width: 40px;
+		height: 40px;
+		background-size: cover;		
+		cursor:pointer;
+	}
+
+	#help {
+		height: 40px;
+		position: absolute;
+		bottom: 65px;
+		left: 30%;
+	}
+
+	#logout {
+		position: absolute;
+		right: 10px;
+		top:10px;
+	}
+
+  
+  .profile{
+	width:150px;
+	display: block;
+	/* border-radius: 80%; */
+	margin : auto;
+	padding-top: 60px;
+	padding-bottom: 20px;
+  }
+
+  #myName, #partnerName {
+	padding-top: 50px;
+	font-size: 22px;
+	/* font-family: Do Hyeon; */
+	font-weight: 800;
+  }
+
+
+  #anniversary{
+	  width: 80%;
+	  margin: auto;
+	  margin-top:30px;
+  }
+  .date{
+	  color:#404040 !important;
+  }
+
+  #anniversary th{
+	color: #e23a6e ;
+	text-align: center;
+  }
+
+  #anniversary tbody tr {
+	border-color: rgba(0, 0, 0, 0.1);
+}
+
+	#anniversary tbody tr:nth-child(2n + 1) {
+		background-color: #fde8ee ;
+	}
+
+	#anniversary {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+	
+	.icon {
+		width:20px;
+		height:20px;
+	}
+
+
+
+
+
+
+	
+
+/* Image */
+
+	.image {
+		border: 0;
+		display: inline-block;
+		position: relative;
+		box-shadow: 0px 0px 0px 7px #fff, 0px 0px 0px 8px rgba(0, 0, 0, 0.1);
+	}
+
+		.image img {
+			display: block;
+		}
+
+		.image.left, .image.right {
+			max-width: 40%;
+		}
+
+			.image.left img, .image.right img {
+				width: 100%;
+			}
+
+		.image.left {
+			float: left;
+			margin: 0 1.5em 1em 0;
+			top: 0.25em;
+		}
+
+		.image.right {
+			float: right;
+			margin: 0 0 1em 1.5em;
+			top: 0.25em;
+		}
+
+		.image.fit {
+			display: block;
+			margin: 0 0 2em 0;
+			width: 100%;
+		}
+
+			.image.fit img {
+				width: 100%;
+			}
+
+		.image.round {
+			border-radius: 100%;
+		}
+
+			.image.round img {
+				border-radius: 100%;
+			}
+
+		.image.main {
+			display: block;
+			margin: 0 0 3em 0;
+			width: 100%;
+		}
+
+			.image.main img {
+				width: 100%;
+			}
+
+	.video-wrapper {
+		position: relative;
+		padding-bottom: 56.25%;
+	/* 16:9 */
+
+		padding-top: 25px;
+		height: 0;
+	}
+
+		.video-wrapper iframe, .video-wrapper object, .video-wrapper embed {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+
+/* Table */
+
+	.table-wrapper {
+		-webkit-overflow-scrolling: touch;
+		overflow-x: auto;
+	}
+
+	table {
+		margin: 0 0 2em 0;
+		width: 100%;
+	}
+
+		table tbody tr {
+			border: solid 1px;
+			border-left: 0;
+			border-right: 0;
+		}
+
+		table td {
+			padding: 0.75em 0.75em;
+		}
+
+		table th {
+			font-size: 0.9em;
+			font-weight: 700;
+			padding: 0 0.75em 0.75em 0.75em;
+			text-align: left;
+		}
+
+		table thead {
+			border-bottom: solid 2px;
+		}
+
+		table tfoot {
+			border-top: solid 2px;
+		}
+
+		table.alt {
+			border-collapse: separate;
+		}
+
+			table.alt tbody tr td {
+				border: solid 1px;
+				border-left-width: 0;
+				border-top-width: 0;
+			}
+
+				table.alt tbody tr td:first-child {
+					border-left-width: 1px;
+				}
+
+			table.alt tbody tr:first-child td {
+				border-top-width: 1px;
+			}
+
+			table.alt thead {
+				border-bottom: 0;
+			}
+
+			table.alt tfoot {
+				border-top: 0;
+			}
+
+
+	table th {
+		color: #000;
+	}
+
+	table thead {
+		border-bottom-color: rgba(0, 0, 0, 0.1);
+	}
+
+	table tfoot {
+		border-top-color: rgba(0, 0, 0, 0.1);
+	}
+
+	table.alt tbody tr td {
+		border-color: rgba(0, 0, 0, 0.1);
+	}
+
