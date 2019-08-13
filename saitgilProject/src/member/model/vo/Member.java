@@ -50,6 +50,16 @@ public class Member implements java.io.Serializable {
 	
 
 
+	public Member(String userId, String userName) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+	}
+
+
+
+
+
 	public Member(String userId, String userPwd, String userName, String birth, String phone, String email, String gender,
 			String address) {
 		super();
