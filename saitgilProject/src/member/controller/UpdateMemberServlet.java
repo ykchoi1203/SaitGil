@@ -33,24 +33,34 @@ public class UpdateMemberServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		String userId = request.getParameter("userId");
-		String userPwd = request.getParameter("userPwd");
-		String userName = request.getParameter("userName");
+		Member loginUser = (Member) request.getSession().getAttribute("loginUser");
+		String userId = loginUser.getUserId(); 
+		String userPwd = loginUser.getUserPwd();
+		String userName = loginUser.getUserName();
 		String birth = request.getParameter("birth");
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
 		String gender = request.getParameter("gender");
 		String address = request.getParameter("address");
 		
+		System.out.println(userId + userPwd + userName + birth);
+		
 		Member mem = new Member(userId, userPwd, userName, birth, phone, email, gender, address);
 		
-		Member updateMem = new MemberService().updateMember(mem);
+		int result  = new MemberService().updateMember(mem);
 		
-		if(updateMem != null) {
-			request.getSession().setAttribute("loginUser", updateMem);
-			request.getSession().setAttribute("msg", "성공적으로 회원정보를 수정했습니다.");
-			
-			response.sendRedirect(request.getContextPath());
+		if(result > 0) {
+			Member updateMem = new MemberService().selectMember(userId);
+			if(updateMem != null) {
+				request.getSession().setAttribute("loginUser", updateMem);
+				request.getSession().setAttribute("msg", "성공적으로 회원정보를 수정했습니다.");
+				request.getRequestDispatcher("views/member/myPage.jsp").forward(request, response);;
+				System.out.println("수정 완료");
+			} else {
+				request.setAttribute("msg", "회원 정보 수정후 불러오기에 실패했습니다.");
+				RequestDispatcher view = request.getRequestDispatcher("views/common/errorPage.jsp");  
+				view.forward(request, response);
+			}
 		} else {
 			request.setAttribute("msg", "회원 정보 수정에 실패했습니다.");
 			RequestDispatcher view = request.getRequestDispatcher("views/common/errorPage.jsp");  

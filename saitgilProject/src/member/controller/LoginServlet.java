@@ -12,11 +12,13 @@ import javax.servlet.http.HttpSession;
 
 import member.model.service.MemberService;
 import member.model.vo.Member;
+import shareFile.model.service.ShareFileService;
+import shareFile.model.vo.ShareFile;
 
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/login.me")
+@WebServlet(name="LoginServlet", urlPatterns="/login.me")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -36,31 +38,43 @@ public class LoginServlet extends HttpServlet {
 		
 		String userId = request.getParameter("userId"); 
 		String userPwd = request.getParameter("userPwd");
-
 		
-		Member loginUser = new MemberService().loginMember(userId, userPwd);
+		int result = new MemberService().loginPage(userId, userPwd);
+		System.out.println(result);
 		
-		
-		
-		if(loginUser == null) {
-
-			request.setAttribute("msg", "로그인 실패");
-			
-			RequestDispatcher view = request.getRequestDispatcher("views/common/errorPage.jsp"); 
-			view.forward(request, response);
-		} else {
-			
-			System.out.println("login 성공!");
+		if( result > 0) {
+			Member loginUserAll = new MemberService().loginMember(userId, userPwd);
 			HttpSession session = request.getSession();
-			session.setMaxInactiveInterval(1200);
-			session.setAttribute("loginUser", loginUser);
+			if(userId.equals("admin")) {
+				RequestDispatcher view = request.getRequestDispatcher("views/admin/adminMain.jsp"); 
+				view.forward(request, response);
 
+			}else {
 			
-			RequestDispatcher view = request.getRequestDispatcher("views/common/indexLogin.jsp"); 
-			view.forward(request, response);
+				session.setMaxInactiveInterval(1200);
+				session.setAttribute("loginUser", loginUserAll);
+				
+				switch(result) {//0:로그인실패, 1:커플코드O, 2:커플코드X
+				case 1: 
+					ShareFile sf = new ShareFileService().selectShareFile(loginUserAll.getcCode());
+					Member partner = new MemberService().selectMember(loginUserAll.getPartnerId());
+					session.setAttribute("partner", partner);
+					session.setAttribute("sf", sf);
+					RequestDispatcher view = request.getRequestDispatcher("views/common/indexLogin.jsp"); 
+					view.forward(request, response);
+					
+					break;
+				case 2 : 
+					request.getRequestDispatcher("views/member/invitationPage.jsp").forward(request, response);
+					break;
+				}
+			}
+		} else {
+			request.setAttribute("msg", "로그인 실패");
+			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
 		}
 		
-		
+	
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="member.model.vo.Member" %>
+<%@ page import="member.model.vo.*" %>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -49,7 +49,7 @@
 	</head>
 	<body>
 		<div id="notice">
-		<img src="resources/images/icons/notice.png" width="30px" height="30px"> <b>[공지사항]</b> 사잇길 점검시간 공지안내
+		<img src="resources/images/icons/notice.png" width="30px" height="30px"> <b onclick="location.href='<%= request.getContextPath() %>/list.no'">[공지사항]</b> 사잇길 점검시간 공지안내
 		</div>
 	<%@ include file="../common/menubar.jsp" %>
 		<!-- Banner -->
@@ -57,9 +57,9 @@
 			<div class="inner" style="width:100%; font-family:'Nanum Myeongjo'; margin: 0em !important; padding: 0em !important; border: 0em !important;">
 					<header>
 						<a href="#selectPhoto" style="float:right;" onclick="changePhoto();"> <img src="resources/images/photoIcon.png" width="40px" class="icon"></a>
-						<h3 calss="mainDay" >  &nbsp;&nbsp;&nbsp;&nbsp; 처음 만난 날</h3>
-						<h2 class="mainDay" style="font-family:'Nanum Myeongjo'; color: #fa96b5" ><a href="#none" onclick="changeDate();">&nbsp;&nbsp;&nbsp;106일째</a></h2>
-						<h3 class="mainDay">상순 ♥ 효리</h3>
+						<h3 class="mainDay" >  &nbsp;&nbsp;&nbsp;&nbsp; 우리 함께한지</h3>
+						<h2 class="mainDay" style="font-family:'Nanum Myeongjo'; color: #fa96b5" ><a href="#none" onclick="changeDate();">&nbsp;&nbsp;&nbsp;<%= dday %>일째</a></h2>
+						<h3 class="mainDay"><%= loginUser.getUserName() %> ♥ <%= partner.getUserName() %></h3>
 					</header>
 				</div>
 			</section>
@@ -71,9 +71,11 @@
 
 				function changeDate() {
 					var firstDate = document.getElementById('firstDate');
-					var date = prompt('처음 만날 날짜를 입력하세요');
+					var date = prompt('처음 만날 날짜를 입력하세요(YYYY-MM-DD)');
+					confirm(date + "가 맞습니까?");
+					
+					location.href="<%= request.getContextPath() %>/changeDate.sh?meetDate=" + date + "&cCode=<%= sf.getcCode() %>";
 
-					firstDate.innerHTML = '사귄 날 : ' + date;
 				}
 			</script>
 

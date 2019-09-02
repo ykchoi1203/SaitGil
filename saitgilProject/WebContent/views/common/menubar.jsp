@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="member.model.vo.Member"
+<%@ page import="member.model.vo.*, shareFile.model.vo.*"
 	import="java.text.DateFormat"
 	import="java.text.ParseException"
 	import="java.text.SimpleDateFormat"
@@ -10,6 +10,12 @@
  %>
 <%
 	Member loginUser = (Member)session.getAttribute("loginUser");
+	Member partner = (Member)session.getAttribute("partner");
+	ShareFile sf = (ShareFile)session.getAttribute("sf");
+	String couplePicture = sf.getcPicturePath(); 
+	Date meetdate = sf.getMeetDate();
+	
+	String contextPath = request.getContextPath();
 	
 %>    
 <%
@@ -59,19 +65,10 @@
     Calendar cal2 = Calendar.getInstance();
     Calendar cal3 = Calendar.getInstance();
     Calendar today = Calendar.getInstance();
-	
-    String start = "2017-01-01";
+
     
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    Date startDate = null;
-
-    try {         
-       startDate = sdf.parse(start);
-
-    } catch (ParseException e) {
-       e.printStackTrace();
-
-    }
+    Date startDate = meetdate;
     
     cal.setTime(startDate);
     cal2.setTime(startDate);
@@ -106,17 +103,20 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>우리 둘만의 사잇길</title>
 	<link href="resources/css/menubar.css" rel="stylesheet" type="text/css">	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
     	 <aside id="profile-1" class="profileSide"> 
-            <a href="#"><img src="resources/images/profile_boy.png" id="photo1" class="profile"></a>
+    	 	<div id="profileArea1">
+            	<img src="<%= loginUser.getProfilePic() %>" id="photo1" class="profile">
+            </div>
             <span id="myName"><%= loginUser.getUserName() %></span> ♥
 			<p id="myBirthDay"><%= result %></p>
 			<table id="menuTB"	>
 				<tr>
 					<th><img src="<%= request.getContextPath() %>/resources/images/icons/myPage2.png" class="icon" onclick="goMyPage();"></th>
 					<th><img src="resources/images/icons/calendar2.png" class="icon"></th>
-					<th><img src="resources/images/icons/store2.png" class="icon"></th>
+					<th><img src="resources/images/icons/store2.png" class="icon" onclick ="goShoppingPage();"></th>
 				</tr>
 				<tr>
 					<td>마이페이지</td>
@@ -124,7 +124,7 @@
 					<td>스토어</td>
 				</tr>
 				<tr>
-					<th><img src="resources/images/icons/gallery2.png" class="icon"></th>
+					<th><img src="resources/images/icons/gallery2.png" class="icon" onclick="goFolderPage();"></th>
 					<th><img src="resources/images/icons/saving3.png" class="icon"></th>
 					<th><img src="resources/images/icons/sns2.png" class="icon"></th>
 				</tr>
@@ -140,16 +140,25 @@
 				문의하기
 			</div>
 		</aside>
+
         <aside id="profile-2" class="profileSide">
 			<div id="logout" onclick="logout();">
 				LOGOUT
 			</div>
-            <a href="#"><img src="resources/images/profile_girl.png" id="photo2" class="profile"></a>	
-            ♥ <span id="partnerName"><%= loginUser.getPartnerName() %></span>
+			<div id="profileArea2"> 
+            	<img src="<%= partner.getProfilePic() %>" id="photo2" class="profile">	
+            </div>
+            ♥ <span id="partnerName"><%= partner.getUserName() %></span>
             <p id="partnerBirthDay"><%= pResult %></p>
 			<p id="firstDate"></p>
 			
 			<table id="anniversary">
+				<tr>
+					<th colspan="2" style="padding:1px;">우리가 사랑에 빠진 날 </th>
+				</tr>
+				<tr>
+					<td colspan="2" style="padding:1px;"><%= startDate %></td>
+				</tr>
 				<tr>
 					<th><%= day %>일</th>
 					<th id="date1" class="date"><%= dDay1 %>일 남음</th>
@@ -164,8 +173,50 @@
 				</tr>
 			</table>
         </aside>
+       
+       <div id="fileArea">
+       		<input type="file" name="profile1" id="profile1" onchange="loadImg(this,1)">
+       </div>
         
         <script>
+        	$(function() {
+        		$("#fileArea").hide();
+        		
+        		$("#profileArea1").click(function() {
+        			$("#profile1").click();
+        		});
+        	})
+        	
+        	function loadImg(value, num){
+        		
+        		if(value.files[0]) {
+        			var reader = new FileReader();
+        			reader.onload = function(e) { 
+	        			if(confirm("정말로 바꾸시겠습니까?")) {
+	        				var path = e.target.result; 
+
+	        				$.ajax({
+	        					url:"updateProfile.me",
+	        					type:"post",
+	        					data:{path:path},
+	        					success:function() {
+	        						$("#photo1").attr("src", e.target.result);									
+	        					},
+	        					error:function() {
+	        						console.log("서버통신 실패");
+	        					}
+	        				})
+	
+		        			}
+	        				
+        			}
+        			reader.readAsDataURL(value.files[0]);
+        			
+        		}
+        		
+        	}
+        	
+        
         	function goMyPage() {
         		location.href = "<%= request.getContextPath() %>/myPage.me";
         	}
@@ -173,6 +224,15 @@
         	function logout() {
         		location.href = '<%= request.getContextPath() %>/logout.me';
         	}
+        	
+        	function goShoppingPage(){
+        		location.href = "<%= request.getContextPath() %>/goMain.sp";
+        	}
+        	
+        	function goFolderPage(){
+        		location.href = "<%= request.getContextPath() %>/list.ph";
+        	}
+        
         </script>
 
 </body>

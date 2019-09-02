@@ -10,7 +10,7 @@
     <style>
     
     	body {
-			background-image: url("../../resources/images/mainImage.jpg");
+			background-image:url("<%= request.getContextPath() %>/resources/images/mainImage.jpg");
 			background-position: center;
 			background-size: cover;
 			background-repeat: no-repeat;
@@ -77,7 +77,7 @@
             padding:10px;
             cursor:pointer;
             border-radius:4px;
-            margin-right:0px;
+            display:inline-block;
         }
         
         #mainBtn:hover {
@@ -123,6 +123,7 @@
             <div class="button">연동하기</div>
         </div>
     	<br><br>
+    		<div id="mainBtn" onclick="location.href='<%= request.getContextPath() %>/myPage.me'">마이페이지</div>
 	  	  <div id="mainBtn" onclick="goMain()">메인으로</div>
     </div>
     

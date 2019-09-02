@@ -23,17 +23,14 @@ public class MemberDao {
 		try {
 			prop.load(new FileReader(fileName));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	//회원 로그인
 	public Member loginMember(Connection conn, String userId, String userPwd) {
-		System.out.println("dao까지는 옸다.");
 		
 		Member loginUser = null; 
 		
@@ -42,10 +39,10 @@ public class MemberDao {
 		ResultSet rset = null;
 		
 		String sql = prop.getProperty("loginMember");
-		System.out.println(userId + userPwd);
 		
 		try {
-
+			System.out.println(userId);
+			System.out.println(userPwd);
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userId);
@@ -54,7 +51,6 @@ public class MemberDao {
 			rset = pstmt.executeQuery(); 
 			
 			if(rset.next()) {
-				System.out.println("있다");
 				loginUser = new Member(rset.getString("user_id"),
 									   rset.getString("user_pwd"),
 									   rset.getString("user_name"),
@@ -69,10 +65,9 @@ public class MemberDao {
 									   rset.getInt("invitation_code"),
 									   rset.getString("status"),
 									   rset.getString("c_code")
-									   		);
-			} else {
-				System.out.println("reset이 없다");
-			}
+									   );
+				System.out.println(loginUser);
+			} 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,7 +102,7 @@ public class MemberDao {
 			pstmt.setString(6, mem.getEmail());
 			pstmt.setString(7, mem.getGender());
 			pstmt.setString(8, mem.getAddress());
-			
+			System.out.println(mem.getGender());
 			result = pstmt.executeUpdate(); 
 	
 		} catch (SQLException e) {
@@ -121,6 +116,7 @@ public class MemberDao {
 	}
 	
 	
+
 	
 	/** 회원정보 수정하기 
 	 * @param conn
@@ -131,7 +127,7 @@ public class MemberDao {
 		
 		int result = 0;
 		PreparedStatement pstmt = null;
-		
+		System.out.println("dao" + mem.getUserId());
 		String sql = prop.getProperty("updateMember");
 		
 		try {
@@ -156,24 +152,23 @@ public class MemberDao {
 	}
 	
 	
-	/** 회원 객체 가져오기 (회원정보 변경 시 덮어씌울 용도)
+	/** 회원 객체 불러오기 
 	 * @param conn
 	 * @param userId
 	 * @return
 	 */
 	public Member selectMember(Connection conn, String userId) {
-		Member mem = null;
-		
-		PreparedStatement pstmt = null; 
+		Member mem = null; 
+		PreparedStatement pstmt = null;
 		ResultSet rset = null; 
 		
-		String sql = prop.getProperty("selectMember");
+		String sql = prop.getProperty("selectMember"); 
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userId);
 			
-			rset = pstmt.executeQuery();
+			rset = pstmt.executeQuery(); 
 			
 			if(rset.next()) {
 				mem = new Member(rset.getString("user_id"),
@@ -190,21 +185,67 @@ public class MemberDao {
 						   rset.getInt("invitation_code"),
 						   rset.getString("status"),
 						   rset.getString("c_code")
-						   		);
-				
+						);		
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return mem;
+
+	}
+	
+	
+	 
+	/** 회원 탈퇴하기 
+	 * @param conn
+	 * @param userId
+	 * @return
+	 */
+	public int deleteMember(Connection conn, String userId) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("deleteMember"); 
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			
+			result = pstmt.executeUpdate(); 
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			close(pstmt);
 		}
 		
-		
-		
-		return mem;
+		return result;
+
 	}
 	
 	
+	public int deleteCCode(Connection conn, String userId) {
+		int result = 0;
+		PreparedStatement pstmt = null; 
+		String sql = prop.getProperty("deleteCCode"); 
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		System.out.println("커플 코드 2명 삭제완료" + result);
+		return result;
+		
+	}
 	
 	
 	
@@ -309,21 +350,74 @@ public class MemberDao {
 			rset = pstmt.executeQuery(); 
 			
 			if(rset.next()) {
-				loginUserAll.setPartnerName(rset.getString("user_name"));
+				loginUserAll.setPartnerId(rset.getString("user_id"));
 				loginUserAll.setPartnerBirth(rset.getString("birth"));
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			close(rset);
 			close(pstmt);
 		}
 		
-		System.out.println("파트너 있을까?" + loginUserAll.getPartnerName());
-		
 		return loginUserAll;
+		
+	}
+	
+	
+	/** 아이디 중복체크 
+	 * @param conn
+	 * @param userId
+	 * @return
+	 */
+	public int idCheck(Connection conn, String userId) {
+		int result = 0;
+		PreparedStatement pstmt = null; 
+		ResultSet rset = null; 
+		
+		String sql = prop.getProperty("idCheck"); 
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+			
+		}
+		
+		return result;
+	}
+	
+	
+	public int updateProfile(Connection conn, String path, String userId) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("updateProfile");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, path);
+			pstmt.setString(2, userId);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+
+		return result;
 		
 	}
 	

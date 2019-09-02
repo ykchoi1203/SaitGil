@@ -22,10 +22,42 @@ public class Member implements java.io.Serializable {
 	private int invitationCode;
 	private String status;
 	private String cCode;
-	private String partnerName;
+	private String partnerId;
 	private String partnerBirth;
 	
+	public Member() {}
 	
+	public Member(String userId, String userPwd, String userName, String birth, String phone, String email, String gender,
+			String address) {
+		super();
+		this.userId = userId;
+		this.userPwd = userPwd;
+		this.userName = userName;
+		this.birth = birth;
+		this.phone = phone;
+		this.email = email;
+		this.gender = gender;
+		this.address = address;
+	}
+	
+	
+	
+	public Member(String userId, String userName, String birth, String phone, String email, String gender, String address,
+			Date joinDate, int reports, String status, String cCode) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.birth = birth;
+		this.phone = phone;
+		this.email = email;
+		this.gender = gender;
+		this.address = address;
+		this.joinDate = joinDate;
+		this.reports = reports;
+		this.status = status;
+		this.cCode = cCode;
+	}
+
 	public Member(String userId, String userPwd, String userName, String birth, String phone, String email, String gender,
 			String address, Date joinDate, int reports, String profilePic, int invitationCode, String status,
 			String cCode) {
@@ -46,26 +78,8 @@ public class Member implements java.io.Serializable {
 		this.cCode = cCode;
 	}
 	
+
 	
-	
-
-
-	public Member(String userId, String userPwd, String userName, String birth, String phone, String email, String gender,
-			String address) {
-		super();
-		this.userId = userId;
-		this.userPwd = userPwd;
-		this.userName = userName;
-		this.birth = birth;
-		this.phone = phone;
-		this.email = email;
-		this.gender = gender;
-		this.address = address;
-	}
-
-
-
-
 
 	public String getUserId() {
 		return userId;
@@ -206,32 +220,19 @@ public class Member implements java.io.Serializable {
 		this.cCode = cCode;
 	}
 
-	
-	
 
-	public String getPartnerName() {
-		return partnerName;
+	public String getPartnerId() {
+		return partnerId;
 	}
 
-
-
-
-
-	public void setPartnerName(String partnerName) {
-		this.partnerName = partnerName;
+	public void setPartnerId(String partnerId) {
+		this.partnerId = partnerId;
 	}
-
-
-
 
 
 	public String getPartnerBirth() {
 		return partnerBirth;
 	}
-
-
-
-
 
 	public void setPartnerBirth(String partnerBirth) {
 		this.partnerBirth = partnerBirth;
