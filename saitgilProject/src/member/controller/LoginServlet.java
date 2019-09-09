@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 
 import member.model.service.MemberService;
 import member.model.vo.Member;
+import notice.model.service.NoticeService;
+import notice.model.vo.Notice;
 import shareFile.model.service.ShareFileService;
 import shareFile.model.vo.ShareFile;
 
@@ -38,36 +40,39 @@ public class LoginServlet extends HttpServlet {
 		
 		String userId = request.getParameter("userId"); 
 		String userPwd = request.getParameter("userPwd");
+
 		
 		int result = new MemberService().loginPage(userId, userPwd);
-		System.out.println(result);
 		
 		if( result > 0) {
 			Member loginUserAll = new MemberService().loginMember(userId, userPwd);
 			HttpSession session = request.getSession();
-			if(userId.equals("admin")) {
-				RequestDispatcher view = request.getRequestDispatcher("views/admin/adminMain.jsp"); 
-				view.forward(request, response);
-
-			}else {
+			session.setAttribute("loginUser", loginUserAll);
 			
-				session.setMaxInactiveInterval(1200);
-				session.setAttribute("loginUser", loginUserAll);
+			if(userId.equals("admin")) {
+				request.getRequestDispatcher("views/admin/adminMain.jsp").forward(request, response);
+			} else {
+			
+			switch(result) {//0:濡쒓렇�씤�떎�뙣, 1:而ㅽ뵆肄붾뱶O, 2:而ㅽ뵆肄붾뱶X
+			case 1: 
+				ShareFile sf = new ShareFileService().selectShareFile(loginUserAll.getcCode());
+				System.out.println(sf);
+				Member partner = new MemberService().selectMember(loginUserAll.getPartnerId());
+				System.out.println(partner);
+				Notice recentNotice = new NoticeService().selectRecent();
+				System.out.println(recentNotice);
+				session.setAttribute("recentNotice", recentNotice);
+				session.setAttribute("partner", partner);
+				session.setAttribute("sf", sf);
+				System.out.println(loginUserAll.getUserName() + "");
+				RequestDispatcher view = request.getRequestDispatcher("views/common/indexLogin.jsp"); 
+				view.forward(request, response);
 				
-				switch(result) {//0:로그인실패, 1:커플코드O, 2:커플코드X
-				case 1: 
-					ShareFile sf = new ShareFileService().selectShareFile(loginUserAll.getcCode());
-					Member partner = new MemberService().selectMember(loginUserAll.getPartnerId());
-					session.setAttribute("partner", partner);
-					session.setAttribute("sf", sf);
-					RequestDispatcher view = request.getRequestDispatcher("views/common/indexLogin.jsp"); 
-					view.forward(request, response);
-					
-					break;
-				case 2 : 
-					request.getRequestDispatcher("views/member/invitationPage.jsp").forward(request, response);
-					break;
-				}
+				break;
+			case 2 : 
+				request.getRequestDispatcher("views/member/invitationPage.jsp").forward(request, response);
+				break;
+			}
 			}
 		} else {
 			request.setAttribute("msg", "로그인 실패");

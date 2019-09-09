@@ -31,24 +31,19 @@ public class SearchIdServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
 		
 		String userName = request.getParameter("userName"); 
 		String phone = request.getParameter("phone");
 		
 		String userId = new MemberService().searchId(userName, phone);
+		System.out.println("userId" + userId);
 		
-		System.out.println(userId);
-		
-		if(userId == null) {
-
-			request.setAttribute("msg", "아이디가 존재하지 않습니다.");
-			
-			RequestDispatcher view = request.getRequestDispatcher("views/common/errorPage.jsp"); 
-			view.forward(request, response);
+		if(userId == "" || userId==null) {
+			response.getWriter().write("fail"); 
 		} else { 
 			request.getSession().setAttribute("userId", userId);
-
-			response.sendRedirect("views/member/memberSearch.jsp");
+			response.getWriter().write(userId);
 		}
 		
 		

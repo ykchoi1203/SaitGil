@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date, java.text.SimpleDateFormat" %>
+<%@ include file ="../common/menubar.jsp" %>
 <%
 	Date date = new Date();
 	String now = new SimpleDateFormat("yyyy-MM-dd").format(date);
@@ -21,8 +22,6 @@
 </style>
 </head>
 <body>
-	<%@ include file ="../common/menubar.jsp" %>
-	
 	
 	<div id="outline">
 		<br>

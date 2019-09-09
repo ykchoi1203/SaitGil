@@ -10,6 +10,7 @@ public class ShareFile {
 	private String changeName;
 	private Date meetDate;
 	
+	public ShareFile() {}
 	
 	public ShareFile(String cCode, String cPicturePath, String originName, String changeName, Date meetDate) {
 		super();

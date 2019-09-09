@@ -154,11 +154,17 @@ public class NoticeService {
 		return listCount;
 		
 	}
-	
-	
-	
-	
-	
-	
+
+
+	 public Notice selectRecent() {
+	      Connection conn = getConnection();
+	      
+	      Notice recent = new NoticeDao().selectRecent(conn); 
+	      
+	      close(conn);
+	      
+	      return recent;
+	      
+	   }
 
 }

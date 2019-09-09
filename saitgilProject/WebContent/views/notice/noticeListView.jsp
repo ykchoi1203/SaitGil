@@ -1,8 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList, notice.model.vo.Notice" %>
+<%@ page import="java.util.ArrayList, notice.model.vo.*" %>
+<%@ include file ="../common/menubar.jsp" %>
 <%
 	ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
+	PageInfo pi = (PageInfo)request.getAttribute("pi");
+	
+	int listCount = pi.getListCount();
+	int currentPage = pi.getCurrentPage();
+	int maxPage = pi.getMaxPage();
+	int startPage = pi.getStartPage();
+	int endPage = pi.getEndPage();
 
 	String msg = (String)request.getAttribute("msg");
 %>
@@ -18,7 +26,6 @@
 </head>
 <body>
 
-	<%@ include file ="../common/menubar.jsp" %>
 	
 	<div id="outline">
 	<h1>공지사항</h2>
@@ -34,7 +41,7 @@
 					</tr>
 					<% if(list.isEmpty())  { %>
 						<tr>
-							<td colspan="5"> 존재하는 공지사항이 없습니다.</td>
+							<td colspan="5">존재하는 공지사항이 없습니다.</td>
 						</tr>
 					<% } else { %>
 						<% for(Notice n: list) { %>
@@ -49,22 +56,45 @@
 					<% } %>
 			</table>
 		</div>
-		<div class="searchArea" align="center">
-			<select id="searchCondition" name ="searchCondition">
-				<option>-----</option>
-				<option value="writer">작성자</option>
-				<option value="title">제목</option>
-				<option value="content">내용</option>
-			</select>
-			<input type="text" name="search">
-			<button type="submit">검색하기</button>
-	
-			<!--관리자만 볼 수 있는 작성하기 버튼  -->
-			<% if(loginUser != null && loginUser.getUserId().equals("admin")) { %>
-				<button onclick="location.href='<%= request.getContextPath() %>/insertForm.no'">작성하기</button>
+		
+		<!-- 페이징 바 -->
+		<div id="pagingArea" align="center">
+			<!-- 맨 처음으로 (<<) -->
+			<button onclick="location.href='<%= request.getContextPath() %>/list.no?currentPage=1'">&lt;&lt;</button>
+			
+			<!-- 이전페이지(<) -->
+			<% if(currentPage == 1) { %>
+				<button disabled> &lt; </button>
+			<% } else { %>
+				<button onclick="location.href='<%= request.getContextPath() %>/list.no?currentPage=<%= currentPage -1 %>'">&lt;</button>
 			<% } %>
 			
+
+			
+			<!-- 10개의 페이지 목록  -->
+			<% for(int p=startPage; p<=endPage; p++ ) { %>
+				
+				<% if(p == currentPage){ %>
+					<button disabled style="background:#e23a6e ;"> <%= p %> </button>			
+				<% } else { %>
+					<button onclick="location.href='<%= request.getContextPath() %>/list.no?currentPage=<%= p %>'"><%= p %></button>
+				<% } %>	
+			<% } %>
+			
+			
+			<!-- 다음페이지(>) -->
+			<% if(currentPage == maxPage) { %>
+				<button disabled> &gt; </button>
+			<% } else { %>
+				<button onclick="location.href='<%= request.getContextPath() %>/list.no?currentPage=<%= currentPage + 1 %>'">&gt;</button>
+			<% } %>
+			
+			
+			<!-- 맨끝으로(>>) -->
+			<button onclick="location.href='<%= request.getContextPath() %>/list.no?currentPage=<%= maxPage %>'">&gt;&gt;</button>
+			
 		</div>
+
 	</div>
 	
 	
@@ -76,8 +106,11 @@
 				$(this).parent().css({"background":"white"});
 			}).click(function() {
 				var num = $(this).parent().children().eq(0).text();
-				
-				location.href="<%= request.getContextPath() %>/detail.no?noticeNo=" + num;
+				if(num == '존재하는 공지사항이 없습니다.') {
+					
+				} else {
+					location.href="<%= request.getContextPath() %>/detail.no?noticeNo=" + num;
+				}
 			})
 			
 		})

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import admin.model.service.AdminService;
 import notice.model.vo.Notice;
 
 /**
@@ -30,7 +31,11 @@ public class AdminNoticeListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ArrayList<Notice> list = new NoticeService().noticeList();
+		ArrayList<Notice> list = new AdminService().selectNoticeList();
+		
+		request.setAttribute("nList", list);
+		
+		request.getRequestDispatcher("views/admin/adminNoticeList.jsp").forward(request, response);
 	
 	}
 

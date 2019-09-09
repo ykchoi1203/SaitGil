@@ -30,23 +30,19 @@ public class SearchPwdServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		
+		response.setContentType("text/html; charset=UTF-8");
 		String userName = request.getParameter("userName"); 
 		String userId = request.getParameter("userId");
 		String email = request.getParameter("email");
 		
-		String userPwd = new MemberService().searchPwd(userName, userId, email);
-		System.out.println("sevlet" + userPwd);
-		if(userPwd == null) {
+		boolean isTrue = new MemberService().searchPwd(userName, userId, email);
 
-			request.setAttribute("msg", "일치하는 회원이 없습니다.");
-			
-			RequestDispatcher view = request.getRequestDispatcher("views/common/errorPage.jsp"); 
-			view.forward(request, response);
-			
-			response.sendRedirect(request.getContextPath());  
-	}
+		if(isTrue) {
+			request.getSession().setAttribute("userId", userId);
+			response.getWriter().write("true");
+		} else {
+			response.getWriter().write("false");
+		}
 	}
 		
 

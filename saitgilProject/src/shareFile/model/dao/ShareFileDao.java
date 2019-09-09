@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -98,6 +99,139 @@ public class ShareFileDao {
 	}
 	
 	
+	/** 커플코드 생성하기 
+	 * @param conn
+	 * @param sf
+	 * @param meetDate
+	 * @return
+	 */
+	public int updateCcode(Connection conn, ShareFile sf, String meetDate) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("updateCcode");
+		System.out.println("DaoTest : " + sf.getcPicturePath() + sf.getcCode());
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, sf.getcPicturePath());
+			pstmt.setString(2, meetDate);
+			pstmt.setString(3, sf.getcCode());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+
+		return result;
+		
+	}
+	
+	
+	
+	/** 커플 연동 성공시 빈 공유파일 insert 해주는거 
+	 * @param conn
+	 * @param coupleCode
+	 * @return
+	 */
+	public int insertCcode(Connection conn, String coupleCode) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("insertCcode");
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, coupleCode);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+
+		return result;
+		
+	}
+	
+	
+	/** 커플사진 변경 
+	 * @return
+	 */
+	public int updateProfile(Connection conn, String name, String cCode) {
+		int result = 0;
+		PreparedStatement pstmt = null; 
+		String sql = prop.getProperty("updateProfile");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, name);
+			pstmt.setString(2, cCode);
+			
+			result = pstmt.executeUpdate();
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt); 
+		}
+		
+		return result;
+		
+	}
+	
+	
+	/** 커플 연동끊을 때 멤버테이블 cCode 삭제하기 
+	 * @param conn
+	 * @param cCode
+	 * @return
+	 */
+	public int deleteCoupleCode(Connection conn, String cCode) {
+		int result = 0; 
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("deleteCoupleCode");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cCode);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;	
+		
+	}
+	
+	
+	
+	
+	public int deleteShareFile(Connection conn, String cCode) {
+		int result = 0;
+		PreparedStatement pstmt = null; 
+		String sql = prop.getProperty("deleteShareFile"); 
+		System.out.println("Sql : " + sql);
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cCode);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
+	}
 	
 
 }

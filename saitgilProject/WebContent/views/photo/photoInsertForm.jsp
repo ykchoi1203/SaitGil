@@ -1,25 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="member.model.vo.Member"%>
+<% 
+	Member loginUser = (Member)session.getAttribute("loginUser");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR&display=swap" rel="stylesheet">
 <title>Insert title here</title>
+
+
 <style>
 .outer {
-	width: 500px;
-	height: 300px;
+	width: 510px;
+	height: 450px;
 	background: white;
 	color: #f7aec5;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: auto;
+	margin-top:30px;
 }
 
 table {
 	border: 1px solid white;
 }
+
+input {
+	border-radius:4px;
+	color:inherit;
+	padding: 0 1em;
+	height:2.5em;
+	width: 330px;
+	border: solid 1px white;
+	background:#fde8ee;
+	margin-button:30px;
+}
+
+
 
 .insertArea {
 	width: 500px;
@@ -29,15 +47,17 @@ table {
 }
 
 .btnArea {
-	width: 150px;
+	width: 200px;
 	margin-left: auto;
 	margin-right: auto;
+
 }
 
 #thumbnailImgArea {
 	width: 350px;
 	height: 200px;
 	display: table-cell;
+
 }
 
 #thumbnailImgArea:hover {
@@ -51,25 +71,47 @@ table {
 	border: 0;
 	cursor: pointer;
 	display: inline-block;
-	font-weight: 700;
 	height: 2.85em;
 	line-height: 2.95em;
 	text-align: center;
 	text-decoration: none;
 	white-space: nowrap;
+	width:80px;
+	font-family:Noto Serif KR;
+}
+
+.button:hover{
+	background: #e23a6e;
+}
+
+body{
+	font-family:Noto Serif KR;
+	background:#f7aec5;
+	width:180px;
+	height:100px;
+	margin:0;
+
+}
+
+h2{
+		font-size:30px;
+		font-weight:900;
+		color:#e23a6e ;
+		font-family: 'Noto Serif KR', serif;
+		margin-block-start: 0.70em;
+
 }
 </style>
 </head>
 <body>
-	<%@ include file="../common/menubar.jsp"%>
 
 	<div class="outer">
-		<br>
+	<br>
 		<h2 align="center">폴더 생성</h2>
 
 		<!-- 파일 업로드를 위해 enctype을 지정해줘야한다. -->
-		<form action="<%= contextPath %>/insert.ph" method="post"
-			enctype="multipart/form-data">
+		<form action="<%= request.getContextPath() %>/fInsert.ph" method="post"
+			enctype="multipart/form-data" id="folderForm">
 
 			<div class="insertArea">
 				<table align="center">
@@ -85,7 +127,9 @@ table {
 					</tr>
 					<tr>
 						<td colspan="3"><input type="text" size="52" name="title"  id="title"
-							placeholder="폴더명을 입력해주세요."></td>
+							placeholder="폴더명을 입력해주세요.">
+						</td>
+
 					</tr>
 
 
@@ -104,7 +148,7 @@ table {
 			<br>
 
 			<div class="btnArea">
-				<button class="button" type="submit">작성완료</button>
+				<button class="button" type="button" onclick="done();">작성완료</button>
 				<button class="button" type="reset">취소하기</button>
 			</div>
 
@@ -113,6 +157,22 @@ table {
 	</div>
 	
 	<script>
+	
+
+
+		function done() {
+			
+			if($('#title').val() == "") {
+				alert('폴더 이름을 입력해주세요 ');
+				$('#title').focus();
+				return;
+			} else {
+				$('#folderForm').submit();
+				alert("폴더 생성이 완료되었습니다.");
+				window.close();
+			}
+		}
+	
 					// 미리보기 이미지 영역을 클릭할 때 파일 첨부 창이 뜨도록!
 					$(function(){
 						$("#fileArea").hide();

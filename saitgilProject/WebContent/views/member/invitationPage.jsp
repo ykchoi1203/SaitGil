@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="member.model.vo.Member"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%	Member loginUser = (Member)session.getAttribute("loginUser");   %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -39,8 +40,9 @@
             font-family:Noto Serif KR;
             border-radius: 8px;
             background: #fde8ee ;
-            height: 170px;
+            height: 210px;
         }
+        
 
         .button {
             display: inline-block;
@@ -108,29 +110,116 @@
             아직 초대코드를 못받으셨나요? <br> 
             연인에게 사랑이 담긴 초대코드를 보내보세요. <br>
             내 연인이 초대코드를 입력한다면 둘만의 사잇길이 펼쳐집니다!</p>
-
-            연인의 전화번호 : <input type="text" id="partnerPhone"> 
-            <div class="button">초대코드 발송</div> 
+	  연인의 이름 : <input type="text" id="partnerName"> <br>
+            연인의 전화번호 : <input type="text" id="partnerPhone" placeholder="(-없이)01012345678"> 
+            <div class="button" onclick="sendCode();">초대코드 발송</div> 
             <br>
         </div>
         <br><br>
         <div class="way">
+        <div id="content2">
             <p><b>방법 2.</b> <br>
-            연인이 보낸 초대코드를 받으셨나요? <br>
-            받으신 초대코드를 입력하세요. 지금부터 둘만의 사잇길이 펼쳐집니다!</p>
-
-            초대코드 : <input type="text" id="invitationCode"> 
-            <div class="button">연동하기</div>
+		            연인이 보낸 초대코드를 받으셨나요? <br>
+		            받으신 초대코드를 입력하세요. 지금부터 둘만의 사잇길이 펼쳐집니다!</p>
+			 연인의 이름 : <input type="text" id="partnerName2"> <br>
+		            초대코드 : <input type="text" id="inputCode"> 
+		            <div class="button" onclick="coupleLink();">연동하기</div>
+        </div>
         </div>
     	<br><br>
-    		<div id="mainBtn" onclick="location.href='<%= request.getContextPath() %>/myPage.me'">마이페이지</div>
-	  	  <div id="mainBtn" onclick="goMain()">메인으로</div>
+    		<div id="mainBtn" onclick="location.href='<%= request.getContextPath() %>/myPageWithout.me'">마이페이지</div>
+	  	  <div id="mainBtn" onclick="goMain()">로그아웃</div>
     </div>
     
     <script>
     	function goMain() {
-    		location.href="<%= request.getContextPath() %>"; 	
+    		location.href="<%= request.getContextPath() %>/logout.me"; 	
     	}
+    	
+    	function sendCode() {
+    		var partnerName = $("#partnerName").val().trim(); 
+    		var partnerPhone = $('#partnerPhone').val().trim();
+    		var fromId = "<%= loginUser.getUserId() %>";
+    		var fromName = "<%= loginUser.getUserName() %>"
+    		
+			$.ajax({
+				url:"<%=request.getContextPath() %>/authNo.co",
+				type:"post",
+				data:{partnerName:partnerName, partnerPhone:partnerPhone, fromId:fromId, fromName:fromName},
+				success:function(result) {			
+					console.log("result : " + result);
+					if(result == "notAvaliable") {
+						alert("본인 아이디로 연동이 안됩니다. 상대방의 정보를 입력해주세요!"); 
+						$("#partnerName").val("");
+						$("#partnerPhone").val("");
+						$("#partnerName").focus();
+					} else if(result == "검색 실패") {
+						alert("존재하는 회원이 없습니다.");
+						$("#partnerName").val("");
+						$("#partnerPhone").val("");
+						$("#partnerName").focus();
+					} else if (result == "success") {
+						alert("인증번호가 전송되었습니다!"); 
+						$("#partnerName").val("");
+						$("#partnerPhone").val("");
+					} else if(result == "exist") {
+						alert("이미 전송된 인증번호가 있습니다.");
+						$("#partnerName").val("");
+						$("#partnerPhone").val("");
+						$("#partnerName").focus();
+					} else {
+						alert("이미 커플연동이 되어있는 회원입니다.");
+						$("#partnerName").val("");
+						$("#partnerPhone").val("");
+						$("#partnerName").focus();
+					}
+				},
+				error:function() {
+					console.log("서버 통신 실패");
+				}
+			})
+    	}
+    	
+    	
+    	
+    	
+    	function coupleLink() {
+    		var inputCode = $('#inputCode').val().trim(); 
+    		var partnerName = $('#partnerName2').val().trim();
+    		var userId = "<%= loginUser.getUserId() %>";
+    		var userName = "<%= loginUser.getUserName() %>";
+    		
+			$.ajax({
+				url:"<%= request.getContextPath() %>/linkCouple.co",
+				type:"post",
+				data:{partnerName:partnerName,  inputCode:inputCode, userId:userId, userName:userName},
+				success:function(result) {			
+					console.log("result : " + result);
+					
+					if(result == "notMatch") {
+						alert("존재하는 인증번호가 없습니다.");
+						$('#partnerName2').val("");
+						$('#inputCode').val("");
+						$('#partnerName2').focus();
+						return;
+					} else if(result=="fail") {
+						alert("커플코드 생성 실패");
+						$('#partnerName2').val("");
+						$('#inputCode').val("");
+						return;
+					} else {
+						alert("커플 연동이 되었습니다. 사잇길에서 추억 쌓기를 시작하세요!"); 
+						location.href = "<%= request.getContextPath() %>/goCoupleForm.me?cCode=" + result;
+						return;
+					}
+				},
+				error:function() {
+					console.log("서버 통신 실패");
+				}
+			})
+    	}
+    	
+    	
     </script>
     <br><br><br><br><br> 
 </body>

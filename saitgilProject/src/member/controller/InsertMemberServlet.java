@@ -49,6 +49,7 @@ public class InsertMemberServlet extends HttpServlet {
 		
 		
 		if(result > 0) {
+			request.getSession().setAttribute("msg", "회원가입이 완료되었습니다. 로그인을 해주세요 :)"); 
 			response.sendRedirect(request.getContextPath());
 
 		} else {

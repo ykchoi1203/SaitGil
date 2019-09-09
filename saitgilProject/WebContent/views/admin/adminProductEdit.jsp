@@ -6,6 +6,15 @@
 	Product p = (Product)request.getAttribute("product");
 	ArrayList<ProductAttachment> list = (ArrayList<ProductAttachment>)request.getAttribute("fileList");
 	int listsize = list.size();
+	String allPic = "";
+	for(int i=0; i<listsize; i++){
+		if(i==0){
+			allPic += list.get(i).getChangeName();
+		} else{
+			allPic += ","+ list.get(i).getChangeName();
+		}
+	}
+	
 %>
 <html lang="en">
 <head>
@@ -36,6 +45,12 @@
 		border: 2px dashed gray;
 		margin: 10px;
 	}
+	#productPicArea1, #productPicArea2, #productPicArea3{
+		width:100px;
+		height:100px;
+		border:2px dashed darkgray;
+		display:table-cell;
+	}
 </style>
 </head>
 <body>
@@ -44,7 +59,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12" style="width: 1000px;">
-						<h1 class="page-head-line">ADD Product</h1>
+						<h1 class="page-head-line">Edit Product</h1>
 					</div>
 				</div>
 				<div class="row">
@@ -66,57 +81,76 @@
 										</select>
 									</div>
 									<div class="form-group">
-										<label>상품 사진</label> <br>
-										<table>
-											<tr>
-												<td>
-													<div class="productPic" id="productPicArea1">
-														<img id='pImg1' width='98px' height='98px'>
-													</div>
-												</td>
-												<td>
-													<div class="productPic" id="productPicArea2">
-														<img id='pImg2' width='98px' height='98px'>
-													</div>
-												</td>
-												<td>
-													<div class="productPic" id="productPicArea3">
-														<img id='pImg3' width='98px' height='98px'>
-													</div>
-												</td>
-											</tr>
-										</table>
-										<div id='fileArea'>
-												<% if(!list.isEmpty()){%>
-													<% for(int i=0; i<list.size();i++){%>
-														<input type="file" multiple name='productImg<%= i+1 %>' value="<%= list.get(i).getOriginName()%>" id='productImg<%= i+1 %>' onchange="loadImg(this, <%= i+1 %>);"> 			
-													<%}%>
-													<% for(int i=listsize; i<3;i++){%>
-														<input type="file" multiple name='productImg<%= i+1 %>' id='productImg<%= i+1 %>' onchange="loadImg(this, <%= i+1 %>);"> 				
-													<%}%>
-												<%} else{%>
-													<% for(int i=1; i<=3;i++){%>
-														<input type="file" multiple name='productImg<%= i+1 %>' id='productImg<%= i+1 %>' onchange="loadImg(this, <%= i+1 %>);"> 				
-													<%}%>
-												<%}%>
+										<label for="ThumbnailImg">상품 대표 사진</label>
+										<div style="width:150; height:150;" id='titleImgArea'>
+											<%for(int i=0; i<list.size(); i++){ 
+												if(list.get(i).getFileLevel()==1){
+											%>
+											<img id='titleImg' width='150px' height='150px' src='resources/product_uploadFiles/<%= list.get(i).getChangeName()%>'>
+												<%} %>
+											<%} %>
+											<input type="hidden" name="hid1" id='hid1' value='0'>
 										</div>
+									</div>
+									<div class="form-group">
+										<label>상품 추가 사진</label> <br>
+											<%if(list.size() > 1) {
+												for(int i=0; i<list.size();i++){
+													if(list.get(i).getFileLevel()>=2){%>
+											<div class="productPic" id="productPicArea<%=i%>">
+												<img id='pImg<%=i %>' width='98px' height='98px' src='resources/product_uploadFiles/<%= list.get(i).getChangeName()%>'>
+												<input type="hidden" name="hid<%=i +1%>" id='hid<%=i+1%>' value='0'>
+											</div>
+													<%}%>
+												<%} %>
+												<%for(int i=list.size(); i<4; i++){ %>
+											<div class="productPic" id="productPicArea<%=i%>">
+												<img id='pImg<%=i %>' width='98px' height='98px'>
+												<input type="hidden" name="hid<%=i+1%>" id='hid<%=i+1%>' value='0'>
+											</div>
+												<%} %>
+											<%} else{%>
+											<div class="productPic" id="productPicArea1">
+												<img id='pImg1' width='98px' height='98px'>
+												<input type="hidden" name="hid2" id='hid2' value='0'>
+											</div>
+											<div class="productPic" id="productPicArea2">
+												<img id='pImg2' width='98px' height='98px'>
+												<input type="hidden" name="hid3" id='hid3' value='0'>
+											</div>
+											<div class="productPic" id="productPicArea3">
+												<img id='pImg3' width='98px' height='98px'>
+												<input type="hidden" name="hid4" id='hid4' value='0'>
+											</div>
+											<%} %>
+										<div id='fileArea'>
+											<input type="file" multiple name='productImg1' id='productImg1' onchange="loadImg(this, 1);"> 			
+											<input type="file" multiple name='productImg2' id='productImg2' onchange="loadImg(this, 2);">
+											<input type="file" multiple name='productImg3' id='productImg3' onchange="loadImg(this, 3);"> 			
+											<input type="file" multiple name='productImg4' id='productImg4' onchange="loadImg(this, 4);">  				
+										</div>
+										
 										<script>
-											// 미리보기 영역을 클릭할 때 파일 첨부 창이 뜨도록
-											$(function() {
+											$(function(){
 												$("#fileArea").hide();
+
+												$("#titleImg").click(function() {$("#productImg1").click();});
+
+												$("#productPicArea1").click(function() {$("#productImg2").click();});
+												$("#productPicArea2").click(function() {$("#productImg3").click();});
+												$("#productPicArea3").click(function() {$("#productImg4").click();});
 												
 												
-
-												$("#productPicArea1").click(function() {$("#productImg1").click();});
-
-												$("#productPicArea2").click(function() {$("#productImg2").click();});
-
-												$("#productPicArea3").click(function() {$("#productImg3").click();});
 											});
 
 											// 파일 첨부 했을 때 미리보기하는 기능
 											// 참고 https://developer.mozilla.org/ko/docs/Web/API/FileReader
 											function loadImg(value, num) {
+												var a = 1+"";
+												var b = 2+"";
+												var c = 3+"";
+												var d = 4+"";
+												
 
 												if (value.files
 														&& value.files[0]) {
@@ -124,21 +158,29 @@
 													var reader = new FileReader();
 
 													reader.onload = function(e) {
+														
 														switch (num) {
 														case 1:
-															$('#pImg1').attr("src",e.target.result);
+															$('#titleImg').attr("src",e.target.result);
+															$('#hid1').val(a);
 														break; // data:URL
 														case 2:
-															$('#pImg2').attr("src",e.target.result);
+															$('#pImg1').attr("src",e.target.result);
+															$('#hid2').val(b);
 														break;
 														case 3:
+															$('#pImg2').attr("src",e.target.result);
+															$('#hid3').val(c);
+														break; // data:URL
+														case 4:
 															$('#pImg3').attr("src",e.target.result);
+															$('#hid4').val(d);
 														break;
 														}
 													}
 													// 파일 읽어주는 메소드
 													reader.readAsDataURL(value.files[0]);
-													console.log($("#productImg1").val());
+													
 												}
 											}
 										</script>
@@ -149,14 +191,14 @@
 									</div>
 									<div class="form-group">
 										<label for="Price">수량</label> <input type="number"
-											class="form-control" id="Amount" name = 'amount' placeholder="상품 수량을 입력하세요." />
+											class="form-control" id="Amount" name = 'amount' value='<%= p.getAmount() %>' readonly />
 									</div>
 									<div class="form-group">
 										<label>상세 설명</label>
-										<div id='summernote' class='summernote' style='width: 900px; height: 500px;'>
-											<%= p.getContents() %>
-											<!--  <textarea id='summernote' class='summernote' name="content" style="display: none;"></textarea>-->
+										<div  style='width: 900px; height: 500px;'>
+											<textarea class='summernote' name="content" style="display: none;"><%= p.getContents() %></textarea>
 										</div>
+										
 										<script>
 											$(function() {
 												$(document).ready(function() {
@@ -176,14 +218,16 @@
 											
 										</script>
 									</div>
+									<input type='hidden' value='<%= p.getpNo() %>' name='pNo' id='pNo'>
+									<input type="hidden" name="getoldPic" id='getoldPic' value = '<%= allPic%>'>
 									<div align=right>
 										<button type="submit" class="btn btn-default">상품 수정</button>
-										<button type="reset" class="btn btn-default">취소하기</button>
+										<button type="reset" class="btn btn-default" onclick="history.back(-1);">취소하기</button>
 									</div>
 								</form>
 								<script>
 									function postForm() {
-										$('textarea[name="Contents"]').html($('.summernote').code());
+										$('textarea[name="content"]').html($('.summernote').code());
 									}
 								</script>
 							</div>

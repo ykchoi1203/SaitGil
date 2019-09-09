@@ -41,8 +41,7 @@ public class MemberDao {
 		String sql = prop.getProperty("loginMember");
 		
 		try {
-			System.out.println(userId);
-			System.out.println(userPwd);
+
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userId);
@@ -65,8 +64,7 @@ public class MemberDao {
 									   rset.getInt("invitation_code"),
 									   rset.getString("status"),
 									   rset.getString("c_code")
-									   );
-				System.out.println(loginUser);
+									   		);
 			} 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -89,8 +87,16 @@ public class MemberDao {
 		
 		int result = 0;
 		PreparedStatement pstmt = null;
-		
 		String sql = prop.getProperty("insertMember"); 
+		
+		
+		String profilePath = "images/profile_boy.png";
+		if(mem.getGender() == null || mem.getGender().equals("M")) {
+			
+			profilePath = "images/profile_boy.png";
+		} else {
+			profilePath = "images/profile_girl.png";
+		}
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -102,7 +108,8 @@ public class MemberDao {
 			pstmt.setString(6, mem.getEmail());
 			pstmt.setString(7, mem.getGender());
 			pstmt.setString(8, mem.getAddress());
-			System.out.println(mem.getGender());
+			pstmt.setString(9, profilePath);
+			
 			result = pstmt.executeUpdate(); 
 	
 		} catch (SQLException e) {
@@ -127,7 +134,6 @@ public class MemberDao {
 		
 		int result = 0;
 		PreparedStatement pstmt = null;
-		System.out.println("dao" + mem.getUserId());
 		String sql = prop.getProperty("updateMember");
 		
 		try {
@@ -199,6 +205,35 @@ public class MemberDao {
 	}
 	
 	
+	
+	/** 비밀벊 변경하기 
+	 * @param conn
+	 * @param userPwd
+	 * @param userId
+	 * @return
+	 */
+	public int updatePwd(Connection conn, String newPwd, String userId) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("updatePwd"); 
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, newPwd);
+			pstmt.setString(2, userId);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		 
+		return result;
+	}
+	
+	
 	 
 	/** 회원 탈퇴하기 
 	 * @param conn
@@ -227,6 +262,11 @@ public class MemberDao {
 	}
 	
 	
+	/** 탈퇴 및 강퇴시 커플코드 삭제 
+	 * @param conn
+	 * @param userId
+	 * @return
+	 */
 	public int deleteCCode(Connection conn, String userId) {
 		int result = 0;
 		PreparedStatement pstmt = null; 
@@ -242,10 +282,12 @@ public class MemberDao {
 		} finally {
 			close(pstmt);
 		}
-		System.out.println("커플 코드 2명 삭제완료" + result);
 		return result;
 		
 	}
+	
+	
+	
 	
 	
 	
@@ -297,8 +339,8 @@ public class MemberDao {
 	 * @param email
 	 * @return 비밀번호 
 	 */
-	public String searchPwd(Connection conn, String userName, String userId, String email) {
-		String userPwd = "";
+	public boolean searchPwd(Connection conn, String userName, String userId, String email) {
+		boolean isTrue = false;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
@@ -313,19 +355,20 @@ public class MemberDao {
 			rset = pstmt.executeQuery();
 			
 			if(rset.next()) {
-				userPwd = rset.getString("user_pwd");
+				int count = rset.getInt(1); 
+				if(count > 0) {
+					isTrue = true;					
+				}
 			}
 						
-			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			close(rset);
 			close(pstmt);
 		}
 		
-		return userPwd;
+		return isTrue;
 		
 	}
 	
@@ -334,13 +377,12 @@ public class MemberDao {
 	 * @param loginUser
 	 * @return
 	 */
-	public Member getPartner(Connection conn, Member loginUserAll) {
+	public Member addPartner(Connection conn, Member loginUserAll) {
 		
-		String sql = prop.getProperty("getPartner");
+		String sql = prop.getProperty("addPartner");
 		PreparedStatement pstmt = null; 
 		ResultSet rset = null; 
-		
-		System.out.println("ccode :  " + loginUserAll.getcCode());
+
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -399,6 +441,12 @@ public class MemberDao {
 	}
 	
 	
+	/** 프로필 사진 변경하기 
+	 * @param conn
+	 * @param path
+	 * @param userId
+	 * @return
+	 */
 	public int updateProfile(Connection conn, String path, String userId) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -422,5 +470,37 @@ public class MemberDao {
 	}
 	
 	
+	
+	
+	public Member selectPartner(Connection conn, String cCode, String partnerName) {
 
+		Member partner = null;
+		PreparedStatement pstmt = null; 
+		ResultSet rset = null; 
+		String sql = prop.getProperty("getPartner");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, partnerName);
+			pstmt.setString(2, cCode);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				partner = new Member();
+				partner.setUserId(rset.getString("user_id"));
+				partner.setUserName(rset.getString("user_name"));
+				partner.setBirth("birth");
+				partner.setUserPwd("user_pwd");
+				partner.setPhone("phone");
+				partner.setGender("gender");
+				partner.setProfilePic(rset.getString("profile_pic"));
+				partner.setcCode("c_code");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+
+		return partner;
+	}
 }

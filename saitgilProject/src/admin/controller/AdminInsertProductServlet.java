@@ -111,7 +111,6 @@ public class AdminInsertProductServlet extends HttpServlet {
 				}
 			}
 			
-			// 3. 파일 외의 게시판제목, 내용, 작정자 회원번호 받아오기 --> Board 객체 생성
 			String pName = multiRequest.getParameter("pName");
 			System.out.println(pName);
 			int price = Integer.parseInt(multiRequest.getParameter("price"));
@@ -140,10 +139,11 @@ public class AdminInsertProductServlet extends HttpServlet {
 				at.setOriginName(originFiles.get(i));
 				at.setChangeName(changeFiles.get(i));
 				
+				at.setFileLevel(originFiles.size()-i);
+				
 				fileList.add(at);
 			}
 			
-			// 4. 사진 게시판 작성용 서비스 요청(board 객체, 첨부파일 리스트 전달)
 			int result = new AdminService().insertProduct(p, fileList);
 			
 			if(result > 0) {
@@ -155,9 +155,9 @@ public class AdminInsertProductServlet extends HttpServlet {
 					File failedFile = new File(savePath + changeFiles.get(i));
 					failedFile.delete();
 				}
-				
+				System.out.println("ㅈㅈ");
 				request.setAttribute("msg", "상품 등록에 실패했습니다.");
-				request.getRequestDispatcher("views/admin/adminProductList.jsp").forward(request, response);
+				response.sendRedirect("pList.ad");
 			}
 			
 		} else {

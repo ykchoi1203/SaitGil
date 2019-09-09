@@ -10,6 +10,7 @@ public class Product {
 	private int purchase;
 	private String url;
 	private String category;
+	private int pCount;
 	
 	public Product() {}
 
@@ -35,6 +36,28 @@ public class Product {
 		this.purchase = purchase;
 		this.url = url;
 		this.category = category;
+	}
+
+	public Product(int pNo, String pName, int price, int amount, String contents, int purchase, String url,
+			String category, int pCount) {
+		super();
+		this.pNo = pNo;
+		this.pName = pName;
+		this.price = price;
+		this.amount = amount;
+		this.contents = contents;
+		this.purchase = purchase;
+		this.url = url;
+		this.category = category;
+		this.pCount = pCount;
+	}
+
+	public int getpCount() {
+		return pCount;
+	}
+
+	public void setpCount(int pCount) {
+		this.pCount = pCount;
 	}
 
 	public int getpNo() {

@@ -136,6 +136,7 @@ body {
 .readonly {
 	font-family: Noto Serif KR;
 	font-size:15px;
+	border:none !important;
 }
 
 
@@ -305,7 +306,7 @@ select {
 
 }
 
-  #idCheck, #changePwd {
+  #idCheck, #changePwd, #cutCouple {
   background: #fa96b5;
   color: #fff;
   margin-left: 10px; 
@@ -320,13 +321,13 @@ select {
     background: #e23a6e;
     color: #fff; }
 
-#reset, #back, #disconnect {
+#reset, #back, #disconnect, #cutCouple {
   background: #fa96b5;
   color: #fff;
   margin-right: 8px; 
 }
   
-  #reset:hover, #back:hover, #disconnect:hover {
+  #reset:hover, #back:hover, #disconnect:hover, #cutCouple:hover{
     background: #e23a6e;
     color: #fff; }
 

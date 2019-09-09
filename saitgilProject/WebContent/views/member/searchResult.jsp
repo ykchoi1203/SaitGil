@@ -92,7 +92,7 @@
 	<script>
 		function goMain() {
 			
-			<%request.getSession().invalidate();%>
+			<% request.getSession().removeAttribute("userId"); %>
 			window.close();
 			
 		}

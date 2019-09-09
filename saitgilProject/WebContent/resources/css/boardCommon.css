@@ -1,0 +1,137 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif+KR:300&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+	body {
+		background-image:url("../images/mainImage.jpg");
+		background-position: center;
+		background-size: cover;
+		background-repeat: no-repeat;
+		height: 780px;
+		margin: 0 0 0 0;
+		
+	}
+	
+	#outline {
+		width:800px;
+		height:80%;
+		background:white; 
+		opacity:0.97;
+		margin-left:auto;
+		margin-right:auto;
+		padding:60px;
+		
+	}
+
+	
+	
+h1 {
+	font-family:Noto Serif KR;
+	color: #e23a6e;
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+h2, h3, h4, h5{
+	font-family:Noto Serif KR;
+}
+
+
+input {
+	border-radius:4px;
+	color:inherit;
+	padding: 0 1em;
+	height:2.5em;
+	border: solid 1px white;
+	background:#fde8ee;
+}
+
+
+button{
+	background: #fa96b5;
+	color: #fff;
+	margin-left: 10px; 
+	display: inline;
+	width: 100px;
+	height: 2.5em;
+	font-size: 14px;
+	margin: auto;
+	border:1px solid white;
+	border-radius:4px;
+	font-family:Noto Serif KR;
+}
+
+
+	
+/* 공지사항 리스트 스타일   */
+
+#listTable{
+	padding:20px;
+	text-align:center;
+	margin:0px;
+}
+	
+#listTable * {
+	font-family:Noto Serif KR;
+}
+	
+#listTable th{ 
+	text-align:center;
+	font-family:Noto Serif KR;
+	color: #e23a6e;
+	font-size: 17px;
+	
+}
+	
+
+select{
+	height: 2.5em;
+	border-radius:4px;
+	border:1px solid #fa96b5;
+	color: #404040;
+	
+}
+
+
+
+/* 공지사항 작성하기 스타일 */
+
+
+
+#insertTable * {
+	font-family: Noto Serif KR;
+}
+
+#insertTable th{
+	font-weight:bold;
+	text-align:center;
+	margin-top:auto;
+	font-size: 15px;
+}
+
+textarea {
+	border-radius:4px;
+	padding: 0 1em;
+	border: solid 1px white;
+	background:#fde8ee;
+	
+}
+
+
+
+
+/* 페이징바 버튼 디자인*/
+ #pagingArea button{
+ 	width:33px;
+ }
+ 
+ #pagingArea {
+ 	padding:10px;
+ }
+
+

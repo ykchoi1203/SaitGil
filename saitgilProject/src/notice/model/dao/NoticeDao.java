@@ -257,8 +257,38 @@ public class NoticeDao {
 		
 	}
 	
-	
-	
-	
+	   /** 메뉴바에 최근 공지사항 띄우는거 가져오기 
+	    * @param conn
+	    * @return
+	    */
+   public Notice selectRecent(Connection conn) {
+      Notice recent = null; 
+      PreparedStatement pstmt = null;
+      ResultSet rset = null; 
+      String sql = prop.getProperty("selectRecent");
+      
+      
+      try {
+         pstmt = conn.prepareStatement(sql);
+         
+         rset = pstmt.executeQuery();
+         
+         if(rset.next()) {
+            recent = new Notice();
+            recent.setNoticeNo(rset.getInt("notice_no"));
+            recent.setNoticeTitle(rset.getString("notice_title"));
+
+         }
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } finally {
+         close(rset);
+         close(pstmt);
+      }
+      
+      return recent;
+      
+   }
+	   
 
 }

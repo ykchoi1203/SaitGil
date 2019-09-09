@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="member.model.vo.Member" %>
 <%
-	Member loginUser = (Member)session.getAttribute("loginUser");
+	String msg = (String)session.getAttribute("msg");
+
 
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -13,6 +14,16 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="resources/css/main.css" />
+		<script>
+			var msg = "<%= msg %>";
+			$(function() {
+				if(msg != "null") {
+					alert(msg);
+					//세션 메세지 출력 후 삭제
+					<% session.removeAttribute("msg"); %>
+				}
+			})
+		</script>
 		<style>
 			#banner {
 				display: -ms-flexbox;
@@ -62,11 +73,16 @@
 					<br>
 					<a href="views/member/agreePage.jsp" style="color:white;  font-weight: lighter; display: inline !important">SignUp</a>
 					<a href="views/member/memberSearch.jsp" style="color:white; font-weight: lighter; display: inline !important; margin: 20px;">Forgotten Account</a>
-					<a href="views/member/invitationPage.jsp">connectTest</a>
 				</div>
 			</section>
 			
 			<script>
+			
+			
+				function testSend() {
+					location.href = '<%= request.getContextPath() %>/sendAuth.co';
+					
+				}
 
 				//로그인 
 				function validate() {  

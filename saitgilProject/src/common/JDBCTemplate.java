@@ -99,7 +99,7 @@ public class JDBCTemplate {
 			
 			try {
 				if(conn != null && !conn.isClosed()) {
-					conn.close(); 
+					conn.commit(); 
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -113,7 +113,7 @@ public class JDBCTemplate {
 			
 			try {
 				if(conn != null && !conn.isClosed()) {
-					conn.close();
+					conn.rollback();
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

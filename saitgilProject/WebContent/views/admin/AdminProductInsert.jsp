@@ -30,6 +30,13 @@
 		border: 2px dashed gray;
 		margin: 10px;
 	}
+	
+	#productPicArea1, #productPicArea2, #productPicArea3{
+		width:100px;
+		height:100px;
+		border:2px dashed darkgray;
+		display:table-cell;
+	}
 </style>
 </head>
 <body>
@@ -60,41 +67,39 @@
 										</select>
 									</div>
 									<div class="form-group">
+										<label for="ThumbnailImg">상품 대표 사진</label>
+										<div id='titleImgArea' style="width:150px;">
+											<img id='titleImg' width='150px' height='150px'>
+										</div>
+									</div>
+									<div class="form-group" >
 										<label>상품 사진</label> <br>
-										<table>
-											<tr>
-												<td>
-													<div class="productPic" id="productPicArea1">
-														<img id='pImg1' width='98px' height='98px'>
-													</div>
-												</td>
-												<td>
-													<div class="productPic" id="productPicArea2">
-														<img id='pImg2' width='98px' height='98px'>
-													</div>
-												</td>
-												<td>
-													<div class="productPic" id="productPicArea3">
-														<img id='pImg3' width='98px' height='98px'>
-													</div>
-												</td>
-											</tr>
-										</table>
+											<div class="productPic" id="productPicArea1">
+												<img id='pImg1' width='98px' height='98px'>
+											</div>
+											<div class="productPic" id="productPicArea2">
+												<img id='pImg2' width='98px' height='98px'>
+											</div>
+											<div class="productPic" id="productPicArea3">
+												<img id='pImg3' width='98px' height='98px'>
+											</div>
 										<div id='fileArea'>
 											<input type="file" multiple name='productImg1' id='productImg1' onchange="loadImg(this, 1);"> 
 											<input type="file" multiple name='productImg2' id='productImg2' onchange="loadImg(this, 2);"> 
-											<input type="file" multiple name='productImg3' id='productImg3' onchange="loadImg(this, 3);">
+											<input type="file" multiple name='productImg3' id='productImg3' onchange="loadImg(this, 3);"> 
+											<input type="file" multiple name='productImg4' id='productImg4' onchange="loadImg(this, 4);"> 
 										</div>
 										<script>
 											// 미리보기 영역을 클릭할 때 파일 첨부 창이 뜨도록
 											$(function() {
 												$("#fileArea").hide();
 
-												$("#productPicArea1").click(function() {$("#productImg1").click();});
+												$("#titleImgArea").click(function() {$("#productImg1").click();});
 
-												$("#productPicArea2").click(function() {$("#productImg2").click();});
+												$("#productPicArea1").click(function() {$("#productImg2").click();});
+												$("#productPicArea2").click(function() {$("#productImg3").click();});
+												$("#productPicArea3").click(function() {$("#productImg4").click();});
 
-												$("#productPicArea3").click(function() {$("#productImg3").click();});
 											});
 
 											// 파일 첨부 했을 때 미리보기하는 기능
@@ -109,12 +114,15 @@
 													reader.onload = function(e) {
 														switch (num) {
 														case 1:
-															$('#pImg1').attr("src",e.target.result);
+															$('#titleImg').attr("src",e.target.result);
 														break; // data:URL
 														case 2:
-															$('#pImg2').attr("src",e.target.result);
+															$('#pImg1').attr("src",e.target.result);
 														break;
 														case 3:
+															$('#pImg2').attr("src",e.target.result);
+														break;
+														case 4:
 															$('#pImg3').attr("src",e.target.result);
 														break;
 														}
@@ -153,7 +161,7 @@
 									</div>
 									<div align=right>
 										<button type="submit" class="btn btn-default">상품 추가</button>
-										<button type="reset" class="btn btn-default">취소하기</button>
+										<button type="reset" class="btn btn-default" onclick="history.back(-1);">취소하기</button>
 									</div>
 								</form>
 								<script>

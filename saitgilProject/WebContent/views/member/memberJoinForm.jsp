@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
    
 <head>
@@ -37,13 +37,13 @@
                         <br>
                         <div class="form-group">
                             <div class="form-group">
-                                <label for="name">* Name :</label>
-                                <input type="text" maxlength="13" name="userName" required>
-                            </div>
-                            <div class="form-group">
                                 <label for="ID">* ID :</label>
                                 <input type="text" name="userId" id="userId" style="width:80%; display:inline" required>
-                                <input type="submit" class="submit" id="idCheck" value="ID check">
+                                <div class="submit" id="idCheck"> &nbsp;&nbsp;IDCHECK &nbsp;&nbsp;</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">* Name :</label>
+                                <input type="text" maxlength="13" name="userName" required>
                             </div>
                         </div>
                         <div class="form-row">
@@ -65,13 +65,11 @@
                                 <label for="email">* Email ID :</label>
                                 <input type="email" name="email" required>
                             </div>
-                            <div class="form-group">
-                                    <label for="address">Address :</label>
-                                    <input type="text" name="address">
-                                    <!--<button onclick="goPopup();">주소 찾기</button>-->
-                                </div>
-                        </div>
-                        
+                           	<div class="form-group">
+                                <label for="ID">Address : </label>
+                                <input type="text" name="address" id="address" placeholder="직접입력" style="width:85%; display:inline">
+                                <div class="submit" id="idCheck" onclick="goPopup();">&nbsp;&nbsp;주소검색 &nbsp;&nbsp;</div>
+                            </div> 
                         <div class="form-radio">
                             <label for="gender" class="radio-label">Gender :</label>
                             <div class="form-radio-item">
@@ -92,7 +90,7 @@
                         <div class="form-submit">
                         	<input type="button" value="뒤로가기" class="submit" id="back" onclick="goBack();" />
                             <input type="reset" value="초기화" class="submit" name="reset" id="reset" />
-                            <input type="submit" value="회원가입" class="submit" name="submit" id="submit" />
+                            <input type="submit" value="회원가입" class="submit" name="submit" id="submit" style="background:gray;" disabled />
                         </div>
                     </form>
                 </div>
@@ -131,57 +129,73 @@
 			return false;
 		}
 		
-		alert($("#joinForm input[name=birth]").val());
 		return true;
 	}
-</script>    
-<script language="javascript">
-// opener관련 오류가 발생하는 경우 아래 주석을 해지하고, 사용자의 도메인정보를 입력합니다. ("팝업API 호출 소스"도 동일하게 적용시켜야 합니다.)
-//document.domain = "abc.go.kr";
-
-function goPopup(){
-	// 주소검색을 수행할 팝업 페이지를 호출합니다.
-	// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(http://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.
-	var pop = window.open("<%= request.getContextPath()%>/views/common/jusoPopup.jsp","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
 	
-	// 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(http://www.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다.
-    //var pop = window.open("/popup/jusoPopup.jsp","pop","scrollbars=yes, resizable=yes"); 
-}
-
-
-function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn,detBdNmList,bdNm,bdKdcd,siNm,sggNm,emdNm,liNm,rn,udrtYn,buldMnnm,buldSlno,mtYn,lnbrMnnm,lnbrSlno,emdNo){
-		// 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
-		document.form.roadFullAddr.value = roadFullAddr;
-		document.form.roadAddrPart1.value = roadAddrPart1;
-		document.form.roadAddrPart2.value = roadAddrPart2;
-		document.form.addrDetail.value = addrDetail;
-		document.form.engAddr.value = engAddr;
-		document.form.jibunAddr.value = jibunAddr;
-		document.form.zipNo.value = zipNo;
-		document.form.admCd.value = admCd;
-		document.form.rnMgtSn.value = rnMgtSn;
-		document.form.bdMgtSn.value = bdMgtSn;
-		document.form.detBdNmList.value = detBdNmList;
-		/** 2017년 2월 추가제공 **/
-		document.form.bdNm.value = bdNm;
-		document.form.bdKdcd.value = bdKdcd;
-		document.form.siNm.value = siNm;
-		document.form.sggNm.value = sggNm;
-		document.form.emdNm.value = emdNm;
-		document.form.liNm.value = liNm;
-		document.form.rn.value = rn;
-		document.form.udrtYn.value = udrtYn;
-		document.form.buldMnnm.value = buldMnnm;
-		document.form.buldSlno.value = buldSlno;
-		document.form.mtYn.value = mtYn;
-		document.form.lnbrMnnm.value = lnbrMnnm;
-		document.form.lnbrSlno.value = lnbrSlno;
-		/** 2017년 3월 추가제공 **/
-		document.form.emdNo.value = emdNo;
+	
+	$(function() {
+		var isUsable = false; //ID중복 X -> True
 		
-}
+		$("#idCheck").click(function() {
+			var userId =  $("#userId");
 
-</script>
+			
+			$.ajax({ //아이디가 사용 가능한지 아닌지 유무 판단만 
+				url:"<%= request.getContextPath() %>/idCheck.me",
+				type:"post",
+				data:{userId:userId.val()},
+				success:function(result){
+					
+					if(result == "fail") {
+						alert("사용할 수 없는 아이디 입니다!");
+						userId.focus(); 
+					} else { //result == success 
+						if(confirm("사용 가능한 아이디입니다. 사용하시겠습니까?")) {
+							userId.attr("readonly", "true"); //더이상 바꿀 수 없게
+							isUsable = true;
+						} else {
+							userId.focus()
+						}
+					}
+					
+					if(isUsable) {
+						$("#submit").removeAttr("disabled").removeAttr("style","none");
+					}
+
+				}, 
+				error:function() {
+					console.log("서버 통신 안됨");
+				}
+				
+			});
+			
+		});
+	});
+	
+	
+	
+	
+	function goPopup(){
+		// 주소검색을 수행할 팝업 페이지를 호출합니다.
+		// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(http://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.
+		var pop = window.open("../juso/jusoPopup.jsp","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+		
+		// 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(http://www.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다.
+	    //var pop = window.open("/popup/jusoPopup.jsp","pop","scrollbars=yes, resizable=yes"); 
+	}
+	
+	
+	function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn,detBdNmList,bdNm,bdKdcd,siNm,sggNm,emdNm,liNm,rn,udrtYn,buldMnnm,buldSlno,mtYn,lnbrMnnm,lnbrSlno,emdNo){
+			$('#address').attr("value", roadFullAddr);
+	}
+
+	
+	
+	
+	
+	
+</script>    
+    
 
 </body>
 </html>

@@ -25,7 +25,7 @@
     <header>
         <div class="container">
             <div class="row">
-                <div class="col-md-12" style="text-align:left;">
+                <div class="col-md-12" style="text-align:left;" >
                     <a onclick='href="<%= contextPath %>/main.ad";' style="margin-top:20px; padding-top:20px;">
                     	<img src="resources/images/logo.png" height="50px"/>
                 	</a>
@@ -51,10 +51,9 @@
                             <li><a href='<%= contextPath%>/mList.ad'>회원</a></li>
                             <li><a href="<%= contextPath%>/nList.ad">공지글</a></li>
                             <li><a href="<%= contextPath%>/pList.ad">상품</a></li>
-                            <li><a href="views/admin/adminProductInsert.jsp">Forms</a></li>
-                            <li><a href="login.html">Login Page</a></li>
-                            <li><a href="blank.html">Blank Page</a></li>
-
+                            <li><a href="<%= contextPath%>/oList.ad">주문내역</a></li>
+                            <li><a href="<%= contextPath%>/qList.ad">문의글</a></li>
+                            <li><a href="<%= contextPath%>/logout.me">로그아웃</a></li>
                         </ul>
                     </div>
                 </div>

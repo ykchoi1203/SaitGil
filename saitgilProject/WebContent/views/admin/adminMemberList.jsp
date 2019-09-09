@@ -60,9 +60,9 @@
 								<td><%= m.getUserId() %></td>
 								<td><%= m.getUserName() %></td>
 								<td><%= m.getPhone() %></td>
-								<td><%= m.getBirth() %></td>
-								<td><%= m.getAddress() %></td>
-								<td><%= m.getEmail() %></td>
+								<td><%if(m.getBirth()!=null){%><%= m.getBirth().split(" ")[0] %><%} else{%>x<%} %></td>
+								<td><%if(m.getAddress()!=null){%><%= m.getAddress() %><%} else{%>x<%} %></td>
+								<td><%if(m.getEmail()!=null){%><%= m.getEmail() %><%} else{%>x<%} %></td>
 								<td><%= m.getReports() %></td>
 								<td><button style="color:white; background:darkgray;">강퇴</button></td>
 							</tr>				

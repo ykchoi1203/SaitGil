@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="member.model.vo.*" %>
+<%@ page import="member.model.vo.*, shareFile.model.vo.*, notice.model.vo.*"%>
+<%
+	String couplePic = ((ShareFile)session.getAttribute("sf")).getcPicturePath();
+%>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -27,7 +30,7 @@
 				-webkit-justify-content: center;
 				-ms-justify-content: center;
 				justify-content: center;			
-				background-image: url("resources/images/mainImage.jpg");
+				background-image: url("resources/shareFile/<%= couplePic %>");
 				background-position: center;
 				background-size: cover;
 				background-repeat: no-repeat;
@@ -38,60 +41,90 @@
 				text-align: center;
 			}
 			
-			#notice {
-				width:80%;
-				margin:auto;
-				color:red;
-				text-align:left;
-				margin-left:15% ;
-			}
+
 		</style>
 	</head>
 	<body>
-		<div id="notice">
-		<img src="resources/images/icons/notice.png" width="30px" height="30px"> <b onclick="location.href='<%= request.getContextPath() %>/list.no'">[공지사항]</b> 사잇길 점검시간 공지안내
-		</div>
 	<%@ include file="../common/menubar.jsp" %>
+
+	
 		<!-- Banner -->
 		<section id="banner">
 			<div class="inner" style="width:100%; font-family:'Nanum Myeongjo'; margin: 0em !important; padding: 0em !important; border: 0em !important;">
 					<header>
-						<a href="#selectPhoto" style="float:right;" onclick="changePhoto();"> <img src="resources/images/photoIcon.png" width="40px" class="icon"></a>
-						<h3 class="mainDay" >  &nbsp;&nbsp;&nbsp;&nbsp; 우리 함께한지</h3>
-						<h2 class="mainDay" style="font-family:'Nanum Myeongjo'; color: #fa96b5" ><a href="#none" onclick="changeDate();">&nbsp;&nbsp;&nbsp;<%= dday %>일째</a></h2>
+						<a href="#selectPhoto" id="photoBtn""style="float:right;"> <img src="resources/images/photoIcon.png" width="40px" class="icon"></a>
+						<h3 class="mainDay" > <!--  &nbsp;&nbsp;&nbsp;&nbsp;  -->우리 함께한지</h3>
+						<h2 class="mainDay" style="font-family:'Nanum Myeongjo'; color: #fa96b5" ><a href="#none" onclick="changeDate();"><!-- &nbsp;&nbsp;&nbsp; --><%= dday %>일째</a></h2>
 						<h3 class="mainDay"><%= loginUser.getUserName() %> ♥ <%= partner.getUserName() %></h3>
 					</header>
 				</div>
 			</section>
-
+			
+			<form action="updateProfile.co" method="post" id="updateProfileForm" enctype="mutipart/form-data">
+				<input type="file" id="changePhoto" name="changePhoto" multiple onchange="updateCouplePhoto();">
+			</form>
+	
+	
 			<script>
-				function changePhoto() {
-					alert('배경 사진바꿔라');
-				}
+				$(function() {
+					$('#changePhoto').hide();
+					
+					$('#photoBtn').click(function() {
+							if(confirm("커플사진을 변경하시겠습니까?")){
+								$('#changePhoto').click();
+
+							}
+							
+						
+					})	
+					
+				})
+				
+				
+				
+				function updateCouplePhoto() {
+		        		
+		        		var form = $('#updateProfileForm')[0];
+		        		var formData = new FormData(form);
+
+			        	    $.ajax({
+			        	        url : 'updateProfile.co',
+			        	        type : 'POST',
+			        	        enctype:"multipart/form-data",
+			        	        data : formData,
+			        	        contentType : false,
+			        	        processData : false,
+								success:function(result) {
+									console.log('result:' + result);
+									if(result == 'fail') {
+										alert('커플 사진 변경에 실패하였습니다.');
+									} else {
+										alert("커플 사진이 변경되었습니다. ")
+										$('#banner').css("background-image",'url("resources/shareFile/' + result + '")');
+									}
+								},
+								error:function() {
+									console.log("서버통신 실패");
+								}
+							})
+			        	}
+			        			
+				
+				
 
 				function changeDate() {
 					var firstDate = document.getElementById('firstDate');
 					var date = prompt('처음 만날 날짜를 입력하세요(YYYY-MM-DD)');
-					confirm(date + "가 맞습니까?");
 					
-					location.href="<%= request.getContextPath() %>/changeDate.sh?meetDate=" + date + "&cCode=<%= sf.getcCode() %>";
-
+					if(date == null) {
+						alert("취소하셨습니다.");
+					}else {
+						confirm(date + "가 맞습니까?");
+						
+						location.href="<%= request.getContextPath() %>/changeDate.sh?meetDate=" + date + "&cCode=<%= sf.getcCode() %>";
+					}
 				}
 			</script>
-
-
-		<!-- Footer -->
-			<footer id="footer">
-				<div class="copyright">
-					<ul class="icons">
-						<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-						<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-						<li><a href="#" class="icon fa-snapchat"><span class="label">Snapchat</span></a></li>
-					</ul>
-					<p>&copy; Untitled. All rights reserved. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Unsplash</a>.</p>
-				</div>
-			</footer>
 
 		<!-- Scripts -->
 			<script src="resources/js/jquery.min.js"></script>

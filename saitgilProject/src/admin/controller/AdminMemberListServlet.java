@@ -34,6 +34,8 @@ public class AdminMemberListServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		ArrayList<Member> mList = new AdminService().selectMemberList();
 		
+		System.out.println(mList.size());
+		
 		request.setAttribute("mList", mList);
 		request.getRequestDispatcher("views/admin/adminMemberList.jsp").forward(request, response);
 	

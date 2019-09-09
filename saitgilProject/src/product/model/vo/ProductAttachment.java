@@ -10,6 +10,7 @@ public class ProductAttachment {
 	private String filePath;
 	private Date uploadDate;
 	private String status;
+	private int fileLevel;
 
 	public ProductAttachment() {}
 
@@ -23,6 +24,29 @@ public class ProductAttachment {
 		this.filePath = filePath;
 		this.uploadDate = uploadDate;
 		this.status = status;
+	}
+	
+
+	public ProductAttachment(int fId, int pNo, String originName, String changeName, String filePath, Date uploadDate,
+			String status, int fileLevel) {
+		super();
+		this.fId = fId;
+		this.pNo = pNo;
+		this.originName = originName;
+		this.changeName = changeName;
+		this.filePath = filePath;
+		this.uploadDate = uploadDate;
+		this.status = status;
+		this.fileLevel = fileLevel;
+	}
+
+	
+	public int getFileLevel() {
+		return fileLevel;
+	}
+
+	public void setFileLevel(int fileLevel) {
+		this.fileLevel = fileLevel;
 	}
 
 	public int getfId() {
@@ -84,7 +108,9 @@ public class ProductAttachment {
 	@Override
 	public String toString() {
 		return "ProductAttachment [fId=" + fId + ", pNo=" + pNo + ", originName=" + originName + ", changeName="
-				+ changeName + ", filePath=" + filePath + ", uploadDate=" + uploadDate + ", status=" + status + "]";
+				+ changeName + ", filePath=" + filePath + ", uploadDate=" + uploadDate + ", status=" + status
+				+ ", fileLevel=" + fileLevel + "]";
 	}
+	
 	
 }

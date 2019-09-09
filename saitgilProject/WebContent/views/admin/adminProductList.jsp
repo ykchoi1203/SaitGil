@@ -4,6 +4,13 @@
 <%@ page import='java.util.*, product.model.vo.*' %>
 <%
 	ArrayList<Product> list = (ArrayList<Product>)request.getAttribute("pList");
+	PageInfo pi = (PageInfo)request.getAttribute("pi");
+	
+	int listCount = pi.getListCount();
+	int currentPage = pi.getCurrentPage();
+	int maxPage = pi.getMaxPage();
+	int startPage = pi.getStartPage();
+	int endPage = pi.getEndPage();
 %>
 <html>
 <head>
@@ -17,7 +24,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<h4 class="page-head-line">회원</h4>
+					<h4 class="page-head-line">상품</h4>
 				</div>
 			</div>
 			<div class="row" align="center">
@@ -31,6 +38,7 @@
 								<th style="text-align: center;">이름</th>
 								<th style="text-align: center;">가격</th>
 								<th style="text-align: center;">재고</th>
+								<th style="text-align: center;">재고수정</th>
 								<th style="text-align: center;">카테고리</th>
 								<th style="text-align: center;">판매량</th>
 								<th style="text-align: center;">수정</th>
@@ -53,6 +61,8 @@
 								<td><%=p.getpName()%></td>
 								<td><%=p.getPrice()%></td>
 								<td><%=p.getAmount()%></td>
+								<td><button class='addAmount'
+										style="color: white; background: darkgray;">추가</button></td>
 								<td><%=p.getCategory()%></td>
 								<td><%=p.getPurchase()%></td>
 								<td><button class='fixbtn'
@@ -69,6 +79,30 @@
 						</table>
 					</div>
 				</div>
+				<div class='pagingArea' align="center">
+					<!-- 맨처음으로 (<<) -->
+					<button onclick="location.href='<%= request.getContextPath() %>/pList.ad?currentPage=1'">&lt;&lt;</button>
+					<%if(currentPage == 1){%>
+					<button disabled>&lt;</button>
+					<%}else{%>
+					<button onclick="location.href='<%= request.getContextPath() %>/pList.ad?currentPage=<%= currentPage -1%>'">&lt;</button>
+					<%}%>
+					
+					<%for(int p=startPage; p<endPage+1; p++){ %>
+						<%if(p == currentPage){ %>
+						<button disabled><%= p %></button>
+						<%}else{ %>
+						<button onclick="location.href='<%= request.getContextPath()%>/pList.ad?currentPage=<%= p%>'"><%= p %></button>
+						<%} %>			
+					<%} %>
+					
+					<% if(currentPage == maxPage){ %>
+					<button disabled>&gt;</button>
+					<%} else{%>
+					<button onclick="location.href='<%= request.getContextPath() %>/pList.ad?currentPage=<%= currentPage + 1 %>'">&gt;</button>
+					<%} %>
+					<button onclick="location.href='<%= request.getContextPath() %>/pList.ad?currentPage=<%= maxPage %>'">&gt;&gt;</button>
+				</div>
 			</div>
 			<div align='right'>
 				<button onclick='location.href="<%= contextPath%>/insertProductPage.ad"'>상품 추가</button>
@@ -81,7 +115,12 @@
 			
 			location.href="<%=contextPath%>/pEditForm.ad?pNo="+pNo;
 		});
-	
+		
+		$(".addAmount").click(function(){
+			var pNo = $(this).parent().parent().children().eq(0).text();
+			var amount = prompt("추가할 갯수를 입력하세요.");
+			location.href="<%=contextPath%>/addAmount.ad?pNo="+pNo+"&amount="+amount;
+		});
 	
 		$(".deletebtn").click(function(){
 			var pNo = $(this).parent().parent().children().eq(0).text();
