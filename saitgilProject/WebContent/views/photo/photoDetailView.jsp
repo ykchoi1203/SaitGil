@@ -84,7 +84,7 @@
       <!-- Main -->
       <section id="main"> <!-- Header --> <header id="header">
       <div>
-         SitGil <span>photoalbum</span>
+          우리가 함께 걷는 사잇길
       </div>
       </header> <!-- Gallery --> <section id="galleries"> <!-- Photo Galleries -->
       <div class="gallery">

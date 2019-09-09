@@ -872,4 +872,94 @@ public class SnsDao {
 		return listCount;
 	}
 	
+	public Board selectBoard(Connection conn, int bNo) {
+		Board b = new Board();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectBoard");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, bNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				b.setbNo(rset.getInt("b_no"));
+				b.setUserId(rset.getString("user_id"));
+				b.setcCode(rset.getString("c_code"));
+				b.setbContent(rset.getString("b_content"));
+				b.setbDate(rset.getDate("b_date"));
+				b.setIsPublic(rset.getString("is_public"));
+				b.setStatus(rset.getString("status"));
+				b.setReport(rset.getInt("report"));
+				b.setLikeCount(rset.getInt("like_count"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			close(rset);
+			close(pstmt);
+		}
+		
+		return b;
+		
+		
+	}
+
+	public ArrayList<Photo> selectPhoto(Connection conn, int bNo) {
+		ArrayList<Photo> pList = new ArrayList<>();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectPhoto");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, bNo);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Photo p = new Photo(rset.getInt("p_no"),
+									rset.getString("photo_path"),
+									rset.getInt("b_no"),
+									rset.getString("change_name"),
+									rset.getString("status")
+									);
+				pList.add(p);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return pList;
+	}
+
+	public int updateBoard(Connection conn, int bNo, String bContent) {
+		
+		int result=0;
+		
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("updateBoard");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, bContent);
+			pstmt.setInt(2, bNo);
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
+	}
 }

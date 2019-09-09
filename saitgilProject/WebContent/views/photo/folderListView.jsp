@@ -4,7 +4,8 @@
 <%
    ArrayList<Folder> folderList = (ArrayList<Folder>)request.getAttribute("folderList");
    ArrayList<Attachment> atList = (ArrayList<Attachment>)request.getAttribute("atList");   
-   
+   String move = (String)request.getAttribute("move");
+   int atId = (int)request.getAttribute("atId");
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -181,26 +182,29 @@
       
       
       function check(fId) {
-         console.log('fId : ' + fId);
-            if($("#isDelete").val() == "D"){
-               console.log($("#isDelete").val());
-                  $("#isDelete").val("N");
-                  if(confirm("해당 폴더를 삭제하시겠습니까?")) {
-                     location.href="<%= contextPath %>/deleteFolder.fo?fId=" + fId;
-                  }
-            }else if($("#isDelete").val() == "U"){
-               console.log($("#isDelete").val());
-               $("#isDelete").val("N");
-                  var fName = prompt("변경할 이름 입력");
-                     location.href="<%= contextPath %>/updateFolder.fo?fId=" + fId + "&fName=" + fName;
-               
-            }else{
-            console.log($("#isDelete").val());
-            location.href="<%=request.getContextPath() %>/detail.ph?fId=" + fId;
-            }
-            
-         
-      }
+          console.log('fId : ' + fId);
+          if("<%=move%>" == "M"){
+             location.href="<%= contextPath %>/realMovePhoto.ph?fId=" + fId + "&atId=" + <%=atId%>;
+          }
+          else if($("#isDelete").val() == "D"){
+                console.log($("#isDelete").val());
+                   $("#isDelete").val("N");
+                   if(confirm("해당 폴더를 삭제하시겠습니까?")) {
+                      location.href="<%= contextPath %>/deleteFolder.fo?fId=" + fId;
+                   }
+             }else if($("#isDelete").val() == "U"){
+                console.log($("#isDelete").val());
+                $("#isDelete").val("N");
+                   var fName = prompt("변경할 이름 입력");
+                      location.href="<%= contextPath %>/updateFolder.fo?fId=" + fId + "&fName=" + fName;
+                
+             }else{
+             console.log($("#isDelete").val());
+             location.href="<%=request.getContextPath() %>/detail.ph?fId=" + fId;
+             }
+             
+          
+       }
    
       
    

@@ -62,8 +62,12 @@
 									<div class="form-group">
 										<label for="Product_Category">카테고리</label> <select
 											name="category" id="Product_Category" class="form-control">
-											<option value="상품">상품</option>
-											<option value="상품">이모티콘</option>
+											<option value="상품">커플옷</option>
+											<option value="상품">커플아이템</option>
+											<option value="상품">꽃</option>
+											<option value="상품">커플용품</option>
+											<option value="상품">파티용품</option>
+											<option value="상품">기타</option>
 										</select>
 									</div>
 									<div class="form-group">

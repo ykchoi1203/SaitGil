@@ -329,7 +329,43 @@ public class SnsService {
 		return result;
 	}
 
+	public Board selectBoard(int bNo) {
+		Connection conn = getConnection();
+		
+		Board b = new SnsDao().selectBoard(conn, bNo);
+		
+		close(conn);
+		
+		return b;
+	}
 
+	public ArrayList<Photo> selectPhoto(int bNo) {
+		Connection conn = getConnection();
+		
+		ArrayList<Photo> pList = new SnsDao().selectPhoto(conn, bNo);
+		
+		close(conn);
+		
+		return pList;
+		
+	}
+
+	public int updateBoard(int bNo, String bContent) {
+		Connection conn = getConnection();
+		
+		int result = new SnsDao().updateBoard(conn, bNo, bContent);
+		
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result;
+		
+	}
 
 
 }

@@ -112,11 +112,9 @@ public class AdminInsertProductServlet extends HttpServlet {
 			}
 			
 			String pName = multiRequest.getParameter("pName");
-			System.out.println(pName);
 			int price = Integer.parseInt(multiRequest.getParameter("price"));
 			String category = multiRequest.getParameter("category");
 			String content = multiRequest.getParameter("content");
-			System.out.println(content);
 			int amount = Integer.parseInt(multiRequest.getParameter("amount"));
 			
 			Product p = new Product();
@@ -139,7 +137,7 @@ public class AdminInsertProductServlet extends HttpServlet {
 				at.setOriginName(originFiles.get(i));
 				at.setChangeName(changeFiles.get(i));
 				
-				at.setFileLevel(originFiles.size()-i);
+				at.setFileLevel(i+1);
 				
 				fileList.add(at);
 			}

@@ -168,7 +168,7 @@
 		function getInfiniteChat() {
 			setInterval(function() {
 				chatListFunction(lastID);
-			}, 100);
+			}, 500);
 		}
 
     	function submitFunction() {

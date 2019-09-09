@@ -34,7 +34,6 @@ public class PhotoMoveServlet2 extends HttpServlet {
 		int atId = Integer.parseInt(request.getParameter("atId"));
 		
 		int result = new FolderService().movePhoto(fId, atId);
-		System.out.println(result);
 		
 		if(result >0) {
 			response.sendRedirect("detail.ph?fId=" + fId);

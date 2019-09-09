@@ -264,7 +264,7 @@ aside {
 	}
 
 		table tbody tr {
-			border: solid 1px;
+			border: solid 1px white;
 			border-left: 0;
 			border-right: 0;
 		}

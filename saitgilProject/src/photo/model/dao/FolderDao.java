@@ -182,9 +182,9 @@ public class FolderDao {
 				// change_name, fid, atId
 				Attachment at = new Attachment();
 				at.setChangeName(rset.getString("change_name"));
-				at.setOriginName(rset.getString("origin_name"));
 				at.setfId(rset.getInt("fId"));
 				at.setAtId(rset.getInt("atId"));
+				at.setOriginName(rset.getString("origin_name"));
 
 				list.add(at);
 			}

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="../common/menubar.jsp" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -23,7 +23,7 @@
 
 </head>
 <body>
-
+<%@ include file="../common/menubar.jsp" %>
 <script>
 var calendar ;
   document.addEventListener('DOMContentLoaded', function() {
@@ -245,6 +245,12 @@ var calendar ;
 						calEvent.title = cal.schedule;
 						calEvent.start = cal.startdate.substr(0,4) + "-" + cal.startdate.substr(4,2) + "-" + cal.startdate.substr(6,2) + "T" + cal.startdate.substr(8, 2) + ":" + cal.startdate.substr(10,2) + ":00";
 						calEvent.end = cal.enddate.substr(0,4) + "-" + cal.enddate.substr(4,2) + "-" + cal.enddate.substr(6,2) + "T" + cal.enddate.substr(8, 2) + ":" + cal.enddate.substr(10,2) + ":00";
+						if( cal.userId == '<%= loginUser.getUserId() %>') {
+							calEvent.color = '#e23a6e';
+						} else {
+							calEvent.color = '#80d4ff';
+						}
+						
 						calendar.addEvent(calEvent);
 					});
 				}

@@ -47,7 +47,7 @@
 					<tr>
 						<th height="50" width="100">작성자</th>
 						<td><%= loginUser.getUserName() %>
-						<input type="hidden" name="writer" value="<%= loginUser.getUserId() %>"></td>
+						<input type="hidden" name="writer" value="<%= loginUser.getUserId() %>">
 						<input type="hidden" name="cCode" value="<%= loginUser.getcCode() %>"></td>
 						<th>작성일</th>
 						<td><%= now %></td>
