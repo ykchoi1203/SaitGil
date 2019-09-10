@@ -160,7 +160,7 @@
 	                             </div>
 	                             <%} %>
 	                            </div>
-	                            <button class="comment-button">댓글달기</button>
+	                            <div class="comment-button">댓글달기</div>
 	                        </div>
 	                        <hr>
 	                    </div>

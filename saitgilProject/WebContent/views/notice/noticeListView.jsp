@@ -21,8 +21,7 @@
 <title>Insert title here</title>
 <link href="https://fonts.googleapis.com/css?family=Noto+Serif+KR&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="resources/css/boardCommon.css">
-<style>
-</style>
+
 </head>
 <body>
 

@@ -46,6 +46,7 @@
 								<div class="single-products">
 										<div class="productinfo text-center">
 											<input type='hidden' value="<%= pList.get(i).getpNo() %>">
+											<input type='hidden' value="<%= pList.get(i).getAmount() %>">
 											  <%for(int j=0; j<paList.size();j++){ %>
 											 	<%if(pList.get(i).getpNo() == paList.get(j).getpNo()){ %>
 												<img width='268' height='249' src="<%= request.getContextPath() %>/resources/product_uploadFiles/<%= paList.get(j).getChangeName() %>">
@@ -72,9 +73,14 @@
 								});
 								
 								$(".cart1").click(function(){
-									var pNo = $(this).parent().parent().parent().parent().children().children().children('input').val();
+									var pNo = $(this).parent().parent().parent().parent().children().children().children('input').eq(0).val();
 									console.log(pNo);
-									location.href="<%=request.getContextPath()%>/addCart.sp?pNo="+pNo;
+									var amount = $(this).parent().parent().parent().parent().children().children().children('input').eq(1).val();
+									if(amount>0){
+										location.href="<%=request.getContextPath()%>/addCart.sp?pNo="+pNo;
+									}else{
+										alert("해당 상품은 매진되었습니다.");
+									}
 								});
 								
 								$(".ggim").click(function(){

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import member.model.vo.Member;
 import sns.model.service.SnsService;
 import sns.model.vo.Board;
 
@@ -40,9 +41,11 @@ public class BoardSecretListAjaxServlet extends HttpServlet {
 		// 1. sns 湲� 由ъ뒪�듃 珥� 媛쒖닔
 		int listCount = new SnsService().getSecretListCount();
 		
+		String cCode = ((Member)request.getSession().getAttribute("loginUser")).getcCode();
+		
 		if(startPage<=listCount) {
 			// 2. sns 湲� 由ъ뒪�듃 遺덈윭�삤湲�(isPublic = Y �씤 �븷�뱾)
-			bList = new SnsService().selectSecretList(startPage, endPage);
+			bList = new SnsService().selectSecretList(cCode,startPage, endPage);
 		}
 		
 		response.setContentType("application/json; charset=utf-8");

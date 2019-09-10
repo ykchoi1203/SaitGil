@@ -30,7 +30,7 @@
 			<div class="row" align="center">
 				<div class="dashboard-div-wrapper bk-clr-two"
 					style="width: 100%; height: 400px;">
-					<div style="width: 100%; height: 350px; overflow: auto">
+					<div style="width: 100%; height: 360px; overflow: auto">
 						<table id='memberTable' width="100%" border="0" cellspacing="0"
 							cellpadding="0">
 							<tr>

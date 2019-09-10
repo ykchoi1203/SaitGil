@@ -41,8 +41,8 @@
 			<div class="row">
 				<div class="col-sm-3">
 					<div class="left-sidebar">
-						<div class="shipping text-center"><!--shipping-->
-							<img src="resources/images/shop/ad1.png"/>
+						<div class="shipping text-center" style="background:white;"><!--shipping-->
+							<a href="http://ssd2.ilovegame.co.kr/"><img src="resources/images/shop/ad111.png" width="170"/></a>
 						</div><!--/shipping-->
 						
 					</div>

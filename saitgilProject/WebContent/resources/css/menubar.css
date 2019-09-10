@@ -330,4 +330,8 @@ aside {
 	table.alt tbody tr td {
 		border-color: rgba(0, 0, 0, 0.1);
 	}
+	
+	#head-2:hover, #logout:hover{
+		cursor:pointer;
+	}
 

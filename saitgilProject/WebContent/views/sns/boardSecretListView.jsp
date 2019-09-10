@@ -339,7 +339,7 @@
                             		
                             
                         	html += "<input type='hidden' value='<%= loginUser.getcCode() %>' name='cCode'>";
-	                        if(value.userId() == <%=loginUser.getUserName()%>){
+	                        if(value.userId == '<%=loginUser.getUserName()%>'){
                             
 	                        	html += "<div class='updel'>" +
 	                        	        "<button class='btn btn-primary up-btn' style='margin-top:5px; background: #e23a6e;'>수정</button>" +

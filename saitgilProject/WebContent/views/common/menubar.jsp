@@ -111,7 +111,6 @@
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
 </head>
 <body>
    <div id="head">
@@ -164,8 +163,8 @@
                <td onclick="location.href='<%= contextPath %>/list.bo'">SNS</td>
             </tr>
             <tr>
-               <th><img src="resources/images/icons/chat.png" class="icon" onclick="location.href='<%= contextPath %>/goChat.ch'"></th>
-               <td onclick="location.href='<%= contextPath %>/goChat.ch'">채팅</td>
+               <th><img src="resources/images/icons/chat.png" class="icon" onclick="goChat();'"></th>
+               <td onclick="goChat();">채팅</td>
             </tr>
             <tr>
                <th><img src="resources/images/icons/help3.png" class="icon" onclick="location.href='<%= contextPath %>/list.in?userId=<%= loginUser.getUserId()%>'"></th>
@@ -247,7 +246,11 @@
                 $(this).parent().css({"background":"white"});
              })
    
-           })
+           });
+           
+           function goChat(){
+        	   window.open("<%= contextPath%>/goChat.ch","pop","width=470,height=650,left=800, scrollbars=yes, resizable=yes");
+           }
            
            function loadImg(value, num){
               

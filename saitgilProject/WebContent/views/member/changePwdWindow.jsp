@@ -98,7 +98,7 @@
 				alert("비밀번호가 일치하지 않습니다.");
 				return;
 			} else {
-				alert("일치해서 서블릿 보냅니다.");
+				alert("성공적으로 변경되었습니다. 다시 로그인 해주세요..");
 				$('#newPwdForm').submit();
 				<% request.getSession().removeAttribute("userId"); %>
 				window.close();	
